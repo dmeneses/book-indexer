@@ -28,7 +28,7 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
     while (input.size() > 0)
     {
         bytesToRead = getBytesToRead(input.front());
-        if (bytesToRead == 0 || i + bytesToRead > input.size())
+        if (bytesToRead == 0 || bytesToRead > input.size())
         {
             return WrongUTF8;
         }
