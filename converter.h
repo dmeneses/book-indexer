@@ -7,9 +7,7 @@
 
 #ifndef NEWCLASS_H
 #define	NEWCLASS_H
-
-#include "unicode.h"
-#include "utf8.h"
+#include <list>
 
 enum ConversionResponse
 {
@@ -19,7 +17,7 @@ enum ConversionResponse
     WrongUTF8
 };
 
-ConversionResponse convertUTF8toUnicode(UTF8& content, Unicode& output);
+ConversionResponse convertUTF8toUnicode(std::list<char>& content, std::list<long>& output);
 
 
 #endif	/* NEWCLASS_H */
