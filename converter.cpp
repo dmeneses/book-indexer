@@ -13,6 +13,7 @@ using namespace std;
 
 int getBytesToRead(char charHeader);
 int convertCharacter(list<char>& content, int bytesToRead);
+int getBits(char byte, int sizeToGet);
 
 ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
 {
@@ -60,7 +61,7 @@ int getBytesToRead(char charHeader)
 
 int convertCharacter(list<char>& content, int bytesToRead)
 {
-    char header = content.front();
+    unsigned char header = content.front();
     content.pop_front();
 
     if (bytesToRead == 1)
@@ -68,22 +69,32 @@ int convertCharacter(list<char>& content, int bytesToRead)
         return header;
     }
 
-    int res = 0;
-    header <<= bytesToRead;
-    res += (unsigned char) header;
+    int res = getBits(header, 7 - bytesToRead);
     bytesToRead--;
 
     while (bytesToRead)
     {
         header = content.front();
         content.pop_front();
-        header <<= 2;
+        header = getBits(header, 6);
         res <<= 6;
         res += (unsigned char) header;
         bytesToRead--;
     }
 
-    res <<= 2l;
+    return res;
+}
+
+int getBits(char byte, int sizeToGet)
+{
+    switch (sizeToGet)
+    {
+    case 6: return byte & 63;
+    case 5: return byte & 31;
+    case 4: return byte & 15;
+    case 3: return byte & 7;
+    default: return 0;
+    }
 }
 
 
