@@ -22,6 +22,7 @@ class ConverterTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testGetBytesToReadWhenIsOnlyOneByte);
     CPPUNIT_TEST(testGetBytesToReadWhenIsTwoBytes);
     CPPUNIT_TEST(testGetBytesToReadWhenIsThreeBytes);
+    CPPUNIT_TEST(testConvertUTF8toUnicode);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -38,6 +39,8 @@ private:
     void testGetBytesToReadWhenIsOnlyOneByte();
     void testGetBytesToReadWhenIsTwoBytes();
     void testGetBytesToReadWhenIsThreeBytes();
+    void testConvertUTF8toUnicode();
+
 };
 
 void validBytesToRead(char toTest, int expectedNumber);

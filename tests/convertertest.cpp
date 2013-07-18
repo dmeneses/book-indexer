@@ -89,3 +89,26 @@ void validBytesToRead(char toTest, int expectedNumber)
     CPPUNIT_ASSERT_EQUAL(expectedNumber, result);
 }
 
+ConversionResponse convertUTF8toUnicode(list<char>& input, list<int>& output);
+
+void ConverterTest::testConvertUTF8toUnicode()
+{
+    size_t expectedSize = 3;
+    list<char> input;
+    input.push_back(0xC3);
+    input.push_back(0xB1);
+    input.push_back(0xe2);
+    input.push_back(0x88);
+    input.push_back(0x92);
+    input.push_back(0x41);
+
+    list<int> output;
+    ConversionResponse result = convertUTF8toUnicode(input, output);
+    CPPUNIT_ASSERT_EQUAL(expectedSize, output.size());
+    CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
+    output.pop_front();
+    CPPUNIT_ASSERT_EQUAL(0x2212, output.front());
+    output.pop_front();
+    CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
+}
+
