@@ -26,7 +26,9 @@ class ConverterTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testGetBytesToReadWhenIsTwoBytes);
     CPPUNIT_TEST(testGetBytesToReadWhenIsThreeBytes);
     CPPUNIT_TEST(testGetBytesToReadWhenIsFourBytes);
-    CPPUNIT_TEST(testConvertUTF8toUnicode);
+    CPPUNIT_TEST(testConvertUTF8toUnicodeWithThreeCharacters);
+    CPPUNIT_TEST(testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining);
+    CPPUNIT_TEST(testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -48,7 +50,9 @@ private:
     void testGetBytesToReadWhenIsTwoBytes();
     void testGetBytesToReadWhenIsThreeBytes();
     void testGetBytesToReadWhenIsFourBytes();
-    void testConvertUTF8toUnicode();
+    void testConvertUTF8toUnicodeWithThreeCharacters();
+    void testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining();
+    void testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle();
 
 };
 

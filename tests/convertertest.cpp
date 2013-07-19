@@ -120,24 +120,54 @@ void validBytesToRead(char toTest, int expectedNumber)
 
 ConversionResponse convertUTF8toUnicode(list<char>& input, list<int>& output);
 
-void ConverterTest::testConvertUTF8toUnicode()
+void ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
 {
-    size_t expectedSize = 3;
     list<char> input;
     input.push_back(0xC3);
     input.push_back(0xB1);
-    input.push_back(0xe2);
+    input.push_back(0xE2);
     input.push_back(0x88);
     input.push_back(0x92);
     input.push_back(0x41);
 
     list<int> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
-    CPPUNIT_ASSERT_EQUAL(expectedSize, output.size());
+    int resultSize = output.size();
+    CPPUNIT_ASSERT_EQUAL(3, resultSize);
     CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
     output.pop_front();
     CPPUNIT_ASSERT_EQUAL(0x2212, output.front());
     output.pop_front();
+    CPPUNIT_ASSERT_EQUAL(0x41, output.front());
+    output.pop_front();
     CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
+}
+
+void ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining()
+{
+    //Putting invalid character 10000000 = 0x80
+    list<char> input;
+    input.push_back(0x80);
+    list<int> output;
+    ConversionResponse result = convertUTF8toUnicode(input, output);
+    CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
+}
+
+void ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
+{
+    //Putting invalid character 10000000 = 0x80
+    list<char> input;
+    input.push_back(0xC3);
+    input.push_back(0xB1);
+    input.push_back(0x80);
+    input.push_back(0xE2);
+    input.push_back(0x88);
+    input.push_back(0x92);
+    list<int> output;
+    ConversionResponse result = convertUTF8toUnicode(input, output);
+     int resultSize = output.size();
+    CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
+    CPPUNIT_ASSERT_EQUAL(1, resultSize);
+    CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
 }
 
