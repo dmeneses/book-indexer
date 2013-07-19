@@ -17,7 +17,8 @@ enum ConversionResponse
     WrongUTF8
 };
 
-ConversionResponse convertUTF8toUnicode(std::list<char>& content, std::list<long>& output);
+ConversionResponse convertUTF8toUnicode(std::list<char>& input, std::list<long>& output);
+ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output);
 
 
 #endif	/* NEWCLASS_H */

@@ -15,6 +15,7 @@ using namespace std;
 int getBytesToRead(char charHeader);
 int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException);
 int getBits(char byte, int sizeToGet);
+void convertToUTF16(long unicodeChar, short outputConversion[2]);
 
 ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
 {
@@ -25,7 +26,6 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
 
     int unicodeChar = 0;
     int bytesToRead = 0;
-    int i = 0;
     while (input.size() > 0)
     {
         bytesToRead = getBytesToRead(input.front());
@@ -45,7 +45,6 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
         }
 
         output.push_back(unicodeChar);
-        i += bytesToRead;
     }
 
     return ConversionOK;
@@ -109,4 +108,33 @@ int getBits(char byte, int sizeToGet)
     }
 }
 
+ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output)
+{
+    if (input.size() == 0)
+    {
+        return EmptyStream;
+    }
 
+    unsigned long unicode = 0;
+    short converted[2];
+    while (input.size() > 0)
+    {
+        unicode = input.front();
+        convertToUTF16(unicode, converted);
+
+        output.push_back(converted[0]);
+
+        if (converted[1] != 0)
+        {
+            output.push_back(converted[1]);
+        }
+        input.pop_front();
+    }
+
+    return ConversionOK;
+}
+
+void convertToUTF16(long unicodeChar, short outputConversion[2])
+{
+
+}
