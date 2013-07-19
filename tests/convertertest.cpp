@@ -57,6 +57,17 @@ void ConverterTest::testConvertCharacterWithThreeBytes()
     validateConversion(content, 0x2212);
 }
 
+void ConverterTest::testConvertCharacterWithFourBytes()
+{
+    //MATHEMATICAL BOLD CAPITAL A
+    list<char> content;
+    content.push_back(0xF0);
+    content.push_back(0x9D);
+    content.push_back(0x90);
+    content.push_back(0x80);
+    validateConversion(content, 0x1D400);
+}
+
 void validateConversion(std::list<char>& content, int expected)
 {
     int result = convertCharacter(content, content.size());
