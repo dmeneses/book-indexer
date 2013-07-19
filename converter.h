@@ -12,8 +12,8 @@
 enum ConversionResponse
 {
     ConversionOK,
-    WrongInput,
-    IncompleteCarater,
+    EmptyStream,
+    IncompleteCharater,
     WrongUTF8
 };
 

@@ -19,7 +19,7 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
 {
     if (input.size() == 0)
     {
-        return WrongInput;
+        return EmptyStream;
     }
 
     int unicodeChar = 0;
@@ -28,10 +28,11 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
     while (input.size() > 0)
     {
         bytesToRead = getBytesToRead(input.front());
-        if (bytesToRead == 0 || bytesToRead > input.size())
-        {
+        
+        if (bytesToRead == 0)
             return WrongUTF8;
-        }
+        if (bytesToRead > input.size())
+            return IncompleteCharater;
 
         unicodeChar = convertCharacter(input, bytesToRead);
         output.push_back(unicodeChar);
