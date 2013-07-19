@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <iostream> // for including cin cout
 #include <bitset>
+#include "bitmanipulation.h"
 
 
 using namespace std;
@@ -17,6 +18,7 @@ using namespace std;
  */
 int main(int argc, char** argv)
 {
+    cout << isOn(128, 6);
     return 0;
 }
 

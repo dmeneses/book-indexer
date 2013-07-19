@@ -29,6 +29,9 @@ class ConverterTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testConvertUTF8toUnicodeWithThreeCharacters);
     CPPUNIT_TEST(testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining);
     CPPUNIT_TEST(testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle);
+    CPPUNIT_TEST(testConvertUTF8toUnicodeWithAEmptyInput);
+    CPPUNIT_TEST(testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBegining);
+    CPPUNIT_TEST(testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMiddle);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -53,6 +56,9 @@ private:
     void testConvertUTF8toUnicodeWithThreeCharacters();
     void testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining();
     void testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle();
+    void testConvertUTF8toUnicodeWithAEmptyInput();
+    void testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBegining();
+    void testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMiddle();
 
 };
 

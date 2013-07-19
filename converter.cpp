@@ -7,12 +7,13 @@
 
 #include "converter.h"
 #include "bitmanipulation.h"
+#include "incompletecharacterexception.h"
 #include <list>
 
 using namespace std;
 
 int getBytesToRead(char charHeader);
-int convertCharacter(list<char>& content, int bytesToRead);
+int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException);
 int getBits(char byte, int sizeToGet);
 
 ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
@@ -28,13 +29,21 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
     while (input.size() > 0)
     {
         bytesToRead = getBytesToRead(input.front());
-        
+
         if (bytesToRead == 0)
             return WrongUTF8;
         if (bytesToRead > input.size())
             return IncompleteCharater;
 
-        unicodeChar = convertCharacter(input, bytesToRead);
+        try
+        {
+            unicodeChar = convertCharacter(input, bytesToRead);
+        }
+        catch (IncompleteCharacterException)
+        {
+            return IncompleteCharater;
+        }
+
         output.push_back(unicodeChar);
         i += bytesToRead;
     }
@@ -56,7 +65,7 @@ int getBytesToRead(char charHeader)
     return 1;
 }
 
-int convertCharacter(list<char>& content, int bytesToRead)
+int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException)
 {
     unsigned char header = content.front();
     content.pop_front();
@@ -73,6 +82,12 @@ int convertCharacter(list<char>& content, int bytesToRead)
     {
         header = content.front();
         content.pop_front();
+
+        if (!isOn(header, 7) || isOn(header, 6))
+        {
+            throw IncompleteCharacterException();
+        }
+
         header = getBits(header, 6);
         res <<= 6;
         res += (unsigned char) header;
