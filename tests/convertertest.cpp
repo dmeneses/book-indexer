@@ -6,6 +6,7 @@
  */
 
 #include "convertertest.h"
+#include "../incompletecharacterexception.h"
 
 using namespace std;
 
@@ -66,6 +67,19 @@ void ConverterTest::testConvertCharacterWithFourBytes()
     content.push_back(0x90);
     content.push_back(0x80);
     validateConversion(content, 0x1D400);
+}
+
+void ConverterTest::testConvertCharacterWithWrongBytes()
+{
+    //MATHEMATICAL BOLD CAPITAL A
+    list<char> content;
+    content.push_back(0xF0);
+    content.push_back(0x9D);
+    content.push_back(0x01); //Wrong!! must be 0x90. It doesn't have the bit header -10- for the byte.
+    content.push_back(0x80);
+    CPPUNIT_ASSERT_THROW_MESSAGE("The expected exception was not received", 
+                                 convertCharacter(content, content.size()), 
+                                 IncompleteCharacterException);
 }
 
 void validateConversion(std::list<char>& content, int expected)
@@ -185,7 +199,7 @@ void ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBeginin
 {
     list<char> input;
     input.push_back(0xC3);
-    input.push_back(0xB1);   
+    input.push_back(0xB1);
     input.push_back(0xE2);
     input.push_back(0x41);
     list<int> output;
