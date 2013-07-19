@@ -43,20 +43,16 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
 
 int getBytesToRead(char charHeader)
 {
-    int i = 7;
-    if (!isOn(charHeader, i))
-    {
-        return 1;
-    }
+    if ((charHeader & 240) == 240) // then there will be 4 bytes in this character
+        return 4;
+    if ((charHeader & 224) == 224) // then there will be 3 bytes in this character
+        return 3;
+    if ((charHeader & 192) == 192) // then there will be 2 bytes in this character
+        return 2;
+    if ((charHeader & 128) == 128) // then ERROR, this is a continuation byte!
+        return 0;
 
-    int res = 0;
-    while (isOn(charHeader, i))
-    {
-        res++;
-        i--;
-    }
-
-    return res > 1 ? res : 0;
+    return 1;
 }
 
 int convertCharacter(list<char>& content, int bytesToRead)

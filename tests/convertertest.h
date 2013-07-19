@@ -16,9 +16,12 @@ class ConverterTest : public CPPUNIT_NS::TestFixture
 {
     CPPUNIT_TEST_SUITE(ConverterTest);
 
+    CPPUNIT_TEST(testGetBytesToReadLimits);
+    CPPUNIT_TEST(testGetBytesToReadWhenCharHasInvalidHeader);
     CPPUNIT_TEST(testConvertCharacterWithOneByte);
     CPPUNIT_TEST(testConvertCharacterWithTwoBytes);
     CPPUNIT_TEST(testConvertCharacterWithThreeBytes);
+    CPPUNIT_TEST(testGetBytesToReadWhenIsFourBytes);
     CPPUNIT_TEST(testGetBytesToReadWhenIsOnlyOneByte);
     CPPUNIT_TEST(testGetBytesToReadWhenIsTwoBytes);
     CPPUNIT_TEST(testGetBytesToReadWhenIsThreeBytes);
@@ -33,9 +36,13 @@ public:
     void tearDown();
 
 private:
+    
+    void testGetBytesToReadLimits();
+    void testGetBytesToReadWhenCharHasInvalidHeader();
     void testConvertCharacterWithOneByte();
     void testConvertCharacterWithTwoBytes();
     void testConvertCharacterWithThreeBytes();
+    void testGetBytesToReadWhenIsFourBytes();
     void testGetBytesToReadWhenIsOnlyOneByte();
     void testGetBytesToReadWhenIsTwoBytes();
     void testGetBytesToReadWhenIsThreeBytes();

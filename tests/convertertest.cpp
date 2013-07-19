@@ -65,6 +65,18 @@ void validateConversion(std::list<char>& content, int expected)
 
 int getBytesToRead(char charHeader);
 
+void ConverterTest::testGetBytesToReadLimits()
+{
+    //255 = 11111111 Max 4 bytes to read for UTF-8.
+    validBytesToRead(255, 4);
+}
+
+void ConverterTest::testGetBytesToReadWhenCharHasInvalidHeader()
+{
+    //Invalid header for a UTF8 Character: 10000000
+    validBytesToRead(128, 0);
+}
+
 void ConverterTest::testGetBytesToReadWhenIsOnlyOneByte()
 {
     //127 = 01111111
@@ -81,6 +93,12 @@ void ConverterTest::testGetBytesToReadWhenIsThreeBytes()
 {
     //227 = 11100011
     validBytesToRead(227, 3);
+}
+
+void ConverterTest::testGetBytesToReadWhenIsFourBytes()
+{
+    //247 = 11110111
+    validBytesToRead(247, 4);
 }
 
 void validBytesToRead(char toTest, int expectedNumber)
