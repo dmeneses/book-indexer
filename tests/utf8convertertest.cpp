@@ -5,33 +5,33 @@
  * Created on Jul 18, 2013, 11:13:16 AM
  */
 
-#include "convertertest.h"
+#include "utf8convertertest.h"
 #include "../incompletecharacterexception.h"
 
 using namespace std;
 
 
-CPPUNIT_TEST_SUITE_REGISTRATION(ConverterTest);
+CPPUNIT_TEST_SUITE_REGISTRATION(UTF8ConverterTest);
 
-ConverterTest::ConverterTest()
+UTF8ConverterTest::UTF8ConverterTest()
 {
 }
 
-ConverterTest::~ConverterTest()
+UTF8ConverterTest::~UTF8ConverterTest()
 {
 }
 
-void ConverterTest::setUp()
+void UTF8ConverterTest::setUp()
 {
 }
 
-void ConverterTest::tearDown()
+void UTF8ConverterTest::tearDown()
 {
 }
 
 int convertCharacter(list<char>& content, int bytesToRead);
 
-void ConverterTest::testConvertCharacterWithOneByte()
+void UTF8ConverterTest::testConvertCharacterWithOneByte()
 {
     //Character A
     list<char> content;
@@ -39,7 +39,7 @@ void ConverterTest::testConvertCharacterWithOneByte()
     validateConversion(content, 0x41);
 }
 
-void ConverterTest::testConvertCharacterWithTwoBytes()
+void UTF8ConverterTest::testConvertCharacterWithTwoBytes()
 {
     //Character ñ
     list<char> content;
@@ -48,7 +48,7 @@ void ConverterTest::testConvertCharacterWithTwoBytes()
     validateConversion(content, 0xF1);
 }
 
-void ConverterTest::testConvertCharacterWithThreeBytes()
+void UTF8ConverterTest::testConvertCharacterWithThreeBytes()
 {
     //Character - (Minus sign)
     list<char> content;
@@ -58,7 +58,7 @@ void ConverterTest::testConvertCharacterWithThreeBytes()
     validateConversion(content, 0x2212);
 }
 
-void ConverterTest::testConvertCharacterWithFourBytes()
+void UTF8ConverterTest::testConvertCharacterWithFourBytes()
 {
     //MATHEMATICAL BOLD CAPITAL A
     list<char> content;
@@ -69,7 +69,7 @@ void ConverterTest::testConvertCharacterWithFourBytes()
     validateConversion(content, 0x1D400);
 }
 
-void ConverterTest::testConvertCharacterWithWrongBytes()
+void UTF8ConverterTest::testConvertCharacterWithWrongBytes()
 {
     //MATHEMATICAL BOLD CAPITAL A
     list<char> content;
@@ -90,37 +90,37 @@ void validateConversion(std::list<char>& content, int expected)
 
 int getBytesToRead(char charHeader);
 
-void ConverterTest::testGetBytesToReadLimits()
+void UTF8ConverterTest::testGetBytesToReadLimits()
 {
     //255 = 11111111 Max 4 bytes to read for UTF-8.
     validBytesToRead(255, 4);
 }
 
-void ConverterTest::testGetBytesToReadWhenCharHasInvalidHeader()
+void UTF8ConverterTest::testGetBytesToReadWhenCharHasInvalidHeader()
 {
     //Invalid header for a UTF8 Character: 10000000
     validBytesToRead(128, 0);
 }
 
-void ConverterTest::testGetBytesToReadWhenIsOnlyOneByte()
+void UTF8ConverterTest::testGetBytesToReadWhenIsOnlyOneByte()
 {
     //127 = 01111111
     validBytesToRead(127, 1);
 }
 
-void ConverterTest::testGetBytesToReadWhenIsTwoBytes()
+void UTF8ConverterTest::testGetBytesToReadWhenIsTwoBytes()
 {
     //195 = 11000011
     validBytesToRead(195, 2);
 }
 
-void ConverterTest::testGetBytesToReadWhenIsThreeBytes()
+void UTF8ConverterTest::testGetBytesToReadWhenIsThreeBytes()
 {
     //227 = 11100011
     validBytesToRead(227, 3);
 }
 
-void ConverterTest::testGetBytesToReadWhenIsFourBytes()
+void UTF8ConverterTest::testGetBytesToReadWhenIsFourBytes()
 {
     //247 = 11110111
     validBytesToRead(247, 4);
@@ -134,7 +134,7 @@ void validBytesToRead(char toTest, int expectedNumber)
 
 ConversionResponse convertUTF8toUnicode(list<char>& input, list<int>& output);
 
-void ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
+void UTF8ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
 {
     list<char> input;
     input.push_back(0xC3);
@@ -157,7 +157,7 @@ void ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
     CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
 }
 
-void ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining()
+void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining()
 {
     //Putting invalid character 10000000 = 0x80
     list<char> input;
@@ -167,7 +167,7 @@ void ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining()
     CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
 }
 
-void ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
+void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
 {
     //Putting invalid character 10000000 = 0x80
     list<char> input;
@@ -185,7 +185,7 @@ void ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
     CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
 }
 
-void ConverterTest::testConvertUTF8toUnicodeWithAEmptyInput()
+void UTF8ConverterTest::testConvertUTF8toUnicodeWithAEmptyInput()
 {
     list<char> input;
     list<int> output;
@@ -195,7 +195,7 @@ void ConverterTest::testConvertUTF8toUnicodeWithAEmptyInput()
     CPPUNIT_ASSERT_EQUAL(0, resultSize);
 }
 
-void ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBegining()
+void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBegining()
 {
     list<char> input;
     input.push_back(0xC3);
@@ -210,7 +210,7 @@ void ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBeginin
     CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
 }
 
-void ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMiddle()
+void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMiddle()
 {
     list<char> input;
     input.push_back(0xC3);

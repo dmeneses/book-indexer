@@ -12,9 +12,9 @@
 #include "../converter.h"
 #include <list>
 
-class ConverterTest : public CPPUNIT_NS::TestFixture
+class UTF8ConverterTest : public CPPUNIT_NS::TestFixture
 {
-    CPPUNIT_TEST_SUITE(ConverterTest);
+    CPPUNIT_TEST_SUITE(UTF8ConverterTest);
 
     CPPUNIT_TEST(testConvertCharacterWithOneByte);
     CPPUNIT_TEST(testConvertCharacterWithTwoBytes);
@@ -37,8 +37,8 @@ class ConverterTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    ConverterTest();
-    virtual ~ConverterTest();
+    UTF8ConverterTest();
+    virtual ~UTF8ConverterTest();
     void setUp();
     void tearDown();
 
