@@ -67,3 +67,17 @@ void UTF16ConverterTest::testUnicodeToUTF16WithEmptyStream()
     CPPUNIT_ASSERT_EQUAL(EmptyStream, result);
     CPPUNIT_ASSERT_EQUAL(0, (int) output.size());
 }
+
+void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrder()
+{
+    std::list<long> input;
+    input.push_back(0x10FFFD);
+    std::list<short> output;
+    ConversionResponse result = unicodeToUTF16(input, output);
+    CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
+    CPPUNIT_ASSERT_EQUAL(2, (int) output.size());
+    CPPUNIT_ASSERT_EQUAL((short) 0xFFDB, output.front());
+    output.pop_front();
+    CPPUNIT_ASSERT_EQUAL((short) 0xFDDF, output.front());
+    output.pop_front();
+}

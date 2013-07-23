@@ -17,6 +17,7 @@ class UTF16ConverterTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testUnicodeToUTF16ToGetWithSurrogatedPair);
     CPPUNIT_TEST(testUnicodeToUTF16ToGetWithoutSurrogatedPair);
     CPPUNIT_TEST(testUnicodeToUTF16WithEmptyStream);
+    CPPUNIT_TEST(testUnicodeToUTF16ToGetLEOrder);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -30,6 +31,7 @@ private:
     void testUnicodeToUTF16ToGetWithSurrogatedPair();
     void testUnicodeToUTF16ToGetWithoutSurrogatedPair();   
     void testUnicodeToUTF16WithEmptyStream();   
+    void testUnicodeToUTF16ToGetLEOrder();
 };
 
 #endif	/* UTF16CONVERTERTEST_H */
