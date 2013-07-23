@@ -15,7 +15,8 @@ using namespace std;
 int getBytesToRead(char charHeader);
 int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException);
 int getBits(char byte, int sizeToGet);
-void convertToUTF16(long unicodeChar, short outputConversion[2]);
+void convertToUTF16(long unicodeChar, short outputConversion[2], UTF16Type type = BE);
+unsigned short flipOrder(unsigned short word);
 
 ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
 {
@@ -108,7 +109,7 @@ int getBits(char byte, int sizeToGet)
     }
 }
 
-ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output)
+ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, UTF16Type type)
 {
     if (input.size() == 0)
     {
@@ -120,7 +121,14 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
     while (input.size() > 0)
     {
         unicode = input.front();
-        convertToUTF16(unicode, converted);
+        convertToUTF16(unicode, converted, type);
+
+        if (type == LE)
+        {
+            short temp = converted[0];
+            converted[0] = converted[1];
+            converted[1] = temp;
+        }
 
         output.push_back(converted[0]);
 
@@ -128,13 +136,14 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
         {
             output.push_back(converted[1]);
         }
+
         input.pop_front();
     }
     delete[] converted;
     return ConversionOK;
 }
 
-void convertToUTF16(long unicodeChar, short* outputConversion)
+void convertToUTF16(long unicodeChar, short* outputConversion, UTF16Type type)
 {
     if (unicodeChar <= 0xFFFF)
     {
@@ -148,6 +157,21 @@ void convertToUTF16(long unicodeChar, short* outputConversion)
     unsigned short lword = unicodeChar & 0x3FF;
     hword += 0xD800;
     lword += 0xDC00;
+
+    if (type == LE)
+    {
+        hword = flipOrder(hword);
+        lword = flipOrder(lword);
+    }
+
     outputConversion[0] = hword;
     outputConversion[1] = lword;
+}
+
+unsigned short flipOrder(unsigned short word)
+{
+    unsigned char hword = word >> 8;
+    word <<= 8;
+    word += hword;
+    return word;
 }
