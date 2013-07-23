@@ -116,7 +116,7 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
     }
 
     unsigned long unicode = 0;
-    short converted[2];
+    short* converted = new short[2];
     while (input.size() > 0)
     {
         unicode = input.front();
@@ -130,11 +130,24 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
         }
         input.pop_front();
     }
-
+    delete[] converted;
     return ConversionOK;
 }
 
-void convertToUTF16(long unicodeChar, short outputConversion[2])
+void convertToUTF16(long unicodeChar, short* outputConversion)
 {
+    if (unicodeChar <= 0xFFFF)
+    {
+        outputConversion[0] = unicodeChar;
+        outputConversion[1] = 0;
+        return;
+    }
 
+    unicodeChar -= 0x10000;
+    unsigned short hword = unicodeChar >> 10;
+    unsigned short lword = unicodeChar & 0x3FF;
+    hword += 0xD800;
+    lword += 0xDC00;
+    outputConversion[0] = hword;
+    outputConversion[1] = lword;
 }
