@@ -59,7 +59,7 @@ void UTF16ConverterTest::testUnicodeToUTF16ToGetWithoutSurrogatedPair()
     output.pop_front();
 }
 
-void testUnicodeToUTF16WithEmptyStream()
+void UTF16ConverterTest::testUnicodeToUTF16WithEmptyStream()
 {
     std::list<long> input;
     std::list<short> output;
