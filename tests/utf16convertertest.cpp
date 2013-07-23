@@ -58,3 +58,12 @@ void UTF16ConverterTest::testUnicodeToUTF16ToGetWithoutSurrogatedPair()
     CPPUNIT_ASSERT_EQUAL((short) 0x6C34, output.front());
     output.pop_front();
 }
+
+void testUnicodeToUTF16WithEmptyStream()
+{
+    std::list<long> input;
+    std::list<short> output;
+    ConversionResponse result = unicodeToUTF16(input, output);
+    CPPUNIT_ASSERT_EQUAL(EmptyStream, result);
+    CPPUNIT_ASSERT_EQUAL(0, (int) output.size());
+}
