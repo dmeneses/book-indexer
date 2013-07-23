@@ -68,7 +68,7 @@ void UTF16ConverterTest::testUnicodeToUTF16WithEmptyStream()
     CPPUNIT_ASSERT_EQUAL(0, (int) output.size());
 }
 
-void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrder()
+void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrderWithSurrogatedPair()
 {
     std::list<long> input;
     input.push_back(0x10FFFD);
@@ -79,5 +79,17 @@ void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrder()
     CPPUNIT_ASSERT_EQUAL((short) 0xFDDF, output.front());
     output.pop_front();
     CPPUNIT_ASSERT_EQUAL((short) 0xFFDB, output.front());
+    output.pop_front();
+}
+
+void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrderWithoutSurrogatedPair()
+{
+    std::list<long> input;
+    input.push_back(0x6C34);
+    std::list<short> output;
+    ConversionResponse result = unicodeToUTF16(input, output, LE);
+    CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
+    CPPUNIT_ASSERT_EQUAL(1, (int) output.size());
+    CPPUNIT_ASSERT_EQUAL((short) 0x346C, output.front());
     output.pop_front();
 }
