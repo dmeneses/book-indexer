@@ -9,7 +9,8 @@
 #include <iostream> // for including cin cout
 #include <bitset>
 #include "bitmanipulation.h"
-
+#include "converter.h"
+#include "book-indexer.h"
 
 using namespace std;
 #define CONVERSION "Conversion: "
@@ -22,8 +23,6 @@ int argsCount;
 
 void checkParamenters();
 void convertFile();
-void convertFileBE();
-void convertFileLE();
 
 int main(int argc, char** argv)
 {
@@ -75,20 +74,10 @@ void convertFile()
 
     switch (option)
     {
-    case 'l': convertFileBE();
+    case 'l': convertUTF8toUTF16(arguments[3], LE);
         break;
-    case 'b': convertFileLE();
+    case 'b': convertUTF8toUTF16(arguments[3], BE);
         break;
     default: cout << CONVERSION << INVALID_OPTION;
     }
-}
-
-void convertFileBE()
-{
-    cout << "Success";
-}
-
-void convertFileLE()
-{
-    cout << "Success";
 }

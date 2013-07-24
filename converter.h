@@ -14,7 +14,8 @@ enum ConversionResponse
     ConversionOK,
     EmptyStream,
     IncompleteCharater,
-    WrongUTF8
+    WrongUTF8,
+    FileNotFound
 };
 
 enum UTF16Type
