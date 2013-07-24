@@ -7,7 +7,7 @@
 
 #ifndef UTF16CONVERTERTEST_H
 #define	UTF16CONVERTERTEST_H
-
+#include "../converter.h"
 #include <cppunit/extensions/HelperMacros.h>
 
 class UTF16ConverterTest : public CPPUNIT_NS::TestFixture
@@ -19,6 +19,7 @@ class UTF16ConverterTest : public CPPUNIT_NS::TestFixture
     CPPUNIT_TEST(testUnicodeToUTF16WithEmptyStream);
     CPPUNIT_TEST(testUnicodeToUTF16ToGetLEOrderWithSurrogatedPair);
     CPPUNIT_TEST(testUnicodeToUTF16ToGetLEOrderWithoutSurrogatedPair);
+    CPPUNIT_TEST(testFlipOrder);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -34,6 +35,7 @@ private:
     void testUnicodeToUTF16WithEmptyStream();   
     void testUnicodeToUTF16ToGetLEOrderWithSurrogatedPair();
     void testUnicodeToUTF16ToGetLEOrderWithoutSurrogatedPair();
+    void testFlipOrder();
 };
 
 #endif	/* UTF16CONVERTERTEST_H */

@@ -6,11 +6,10 @@
  */
 
 #include "utf16convertertest.h"
-#include "converter.h"
 #include <iostream>
 
-
 CPPUNIT_TEST_SUITE_REGISTRATION(UTF16ConverterTest);
+unsigned short flipOrder(unsigned short word);
 
 UTF16ConverterTest::UTF16ConverterTest()
 {
@@ -70,6 +69,9 @@ void UTF16ConverterTest::testUnicodeToUTF16WithEmptyStream()
 
 void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrderWithSurrogatedPair()
 {
+    //PRIVATE USE CHARACTER-10FFFD (last Unicode code point)	
+    //UTF16 = DBFF DFFD
+    //UTF16 LITTLE ENDIAN = FDDF DBFF
     std::list<long> input;
     input.push_back(0x10FFFD);
     std::list<short> output;
@@ -84,6 +86,9 @@ void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrderWithSurrogatedPair()
 
 void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrderWithoutSurrogatedPair()
 {
+    //CJK UNIFIED IDEOGRAPH-6C34 (water)
+    //UTF16 = 6C34
+    //UTF16 = 346C
     std::list<long> input;
     input.push_back(0x6C34);
     std::list<short> output;
@@ -92,4 +97,10 @@ void UTF16ConverterTest::testUnicodeToUTF16ToGetLEOrderWithoutSurrogatedPair()
     CPPUNIT_ASSERT_EQUAL(1, (int) output.size());
     CPPUNIT_ASSERT_EQUAL((short) 0x346C, output.front());
     output.pop_front();
+}
+
+void UTF16ConverterTest::testFlipOrder()
+{
+    int result = flipOrder(0xFFEE);
+    CPPUNIT_ASSERT_EQUAL(0xEEFF, result);
 }
