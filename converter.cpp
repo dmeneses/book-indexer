@@ -18,14 +18,14 @@ int getBits(char byte, int sizeToGet);
 void convertToUTF16(long unicodeChar, short outputConversion[2], UTF16Type type = BE);
 unsigned short flipOrder(unsigned short word);
 
-ConversionResponse convertUTF8toUnicode(list<char> &input, list<int> &output)
+ConversionResponse convertUTF8toUnicode(list<char> &input, list<long> &output)
 {
     if (input.size() == 0)
     {
         return EmptyStream;
     }
 
-    int unicodeChar = 0;
+    long unicodeChar = 0;
     int bytesToRead = 0;
     while (input.size() > 0)
     {

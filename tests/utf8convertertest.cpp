@@ -144,15 +144,15 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
     input.push_back(0x92);
     input.push_back(0x41);
 
-    list<int> output;
+    list<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(3, resultSize);
-    CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
+    CPPUNIT_ASSERT_EQUAL((long)0xF1, output.front());
     output.pop_front();
-    CPPUNIT_ASSERT_EQUAL(0x2212, output.front());
+    CPPUNIT_ASSERT_EQUAL((long)0x2212, output.front());
     output.pop_front();
-    CPPUNIT_ASSERT_EQUAL(0x41, output.front());
+    CPPUNIT_ASSERT_EQUAL((long)0x41, output.front());
     output.pop_front();
     CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
 }
@@ -162,7 +162,7 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining(
     //Putting invalid character 10000000 = 0x80
     list<char> input;
     input.push_back(0x80);
-    list<int> output;
+    list<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
 }
@@ -177,18 +177,18 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
     input.push_back(0xE2);
     input.push_back(0x88);
     input.push_back(0x92);
-    list<int> output;
+    list<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
     CPPUNIT_ASSERT_EQUAL(1, resultSize);
-    CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
+    CPPUNIT_ASSERT_EQUAL((long)0xF1, output.front());
 }
 
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithAEmptyInput()
 {
     list<char> input;
-    list<int> output;
+    list<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(EmptyStream, result);
@@ -202,12 +202,12 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBeg
     input.push_back(0xB1);
     input.push_back(0xE2);
     input.push_back(0x41);
-    list<int> output;
+    list<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(IncompleteCharater, result);
     CPPUNIT_ASSERT_EQUAL(1, resultSize);
-    CPPUNIT_ASSERT_EQUAL(0xF1, output.front());
+    CPPUNIT_ASSERT_EQUAL((long)0xF1, output.front());
 }
 
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMiddle()
@@ -217,7 +217,7 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMidd
     input.push_back(0xE2);
     input.push_back(0x88);
     input.push_back(0x92);
-    list<int> output;
+    list<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(IncompleteCharater, result);
