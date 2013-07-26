@@ -9,6 +9,17 @@
 
 #include "filewriter.h"
 
+FileWriter::FileWriter(const char* path)
+{
+    outputFile_.open(path, std::ofstream::out | std::ofstream::trunc | std::ofstream::binary);
+}
+
+FileWriter::~FileWriter()
+{
+    if (outputFile_.is_open())
+        outputFile_.close();
+}
+
 void FileWriter::close()
 {
     outputFile_.close();

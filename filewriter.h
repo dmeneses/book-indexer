@@ -12,23 +12,11 @@
 class FileWriter
 {
 public:
-
-    FileWriter(const char* path)
-    {
-        outputFile_.open(path, std::ofstream::out | std::ofstream::trunc | std::ofstream::binary);
-    }
-
+    FileWriter(const char* path);
     FileWriter(const FileWriter& orig);
-
-    virtual ~FileWriter()
-    {
-        if (outputFile_.is_open())
-            outputFile_.close();
-    }
-
+    virtual ~FileWriter();
     void close();
     bool write(std::list<short> &data);
-
 private:
     std::ofstream outputFile_;
 };

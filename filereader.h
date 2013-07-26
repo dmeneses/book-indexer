@@ -22,46 +22,21 @@ enum FileEncoding
 class FileReader
 {
 public:
-
-    FileReader(const char* path, FileEncoding encoding)
-    {
-        if (!validFile(path))
-        {
-            //throw exception
-        }
-
-        path_ = new char[strlen(path) + 1];
-        strcpy(path_, path);
-        this->encoding_ = encoding;
-        openFile_.open(path_, std::ifstream::binary);
-        openFile_.seekg(0, openFile_.end);
-        fileSize_ = openFile_.tellg();
-        openFile_.seekg(0, openFile_.beg);
-        int currentIndex_ = 0;
-    }
-
     FileReader(const FileReader & orig);
-
-    virtual ~FileReader()
-    {
-        if (path_)
-            delete[] path_;
-
-        if (openFile_.is_open())
-            openFile_.close();
-    }
-
+    static FileReader* buildFileReader(const char* path, FileEncoding encoding);
+    virtual ~FileReader();
     int readBuffer(int size, bool checkCompleteChars, std::list<char>& output);
     bool end();
     void close();
+
 private:
-    bool validFile(const char* path);
+    FileReader(const char* path, FileEncoding encoding);
     int removeUntilLastCompleteChar(std::list<char> output);
-    
+    static bool validFile(const char* path);
+
     std::ifstream openFile_;
     char* path_;
     FileEncoding encoding_;
-    int currentIndex_;
     int fileSize_;
 };
 

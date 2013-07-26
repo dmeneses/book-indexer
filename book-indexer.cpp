@@ -4,26 +4,27 @@
 #include "filereader.h"
 #include "filewriter.h"
 #include <list>
+#define READ_SIZE 100
+
 using namespace std;
+
+const char* concat(const char* string1, const char* string2);
 
 ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
 {
-    if (!path)
-    {
-        return FileNotFound;
-    }
+    FileReader* reader = FileReader::buildFileReader(path, UTF8);
+    if (!reader) return FileNotFound;
+    FileWriter* writer = new FileWriter(concat(path, "UTF16"));
 
-    FileReader reader(path, UTF8);
-    string newName(path);
-    newName.append("UTF16");
-    FileWriter writer(newName.c_str());
-    while (!reader.end())
+    list<char> buffer;
+    list<long> unicode;
+    list<short> converted;
+
+    while (!reader->end())
     {
-        list<char> buffer;
-        int readBytes = reader.readBuffer(100, true, buffer);
+        int readBytes = reader->readBuffer(READ_SIZE, true, buffer);
         if (readBytes > 0)
         {
-            list<long> unicode;
             ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
 
             if (response != ConversionOK)
@@ -31,7 +32,6 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
                 return response;
             }
 
-            list<short> converted;
             response = unicodeToUTF16(unicode, converted, type);
 
             if (response != ConversionOK)
@@ -39,11 +39,22 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
                 return response;
             }
 
-            writer.write(converted);
+            writer->write(converted);
         }
+
+        buffer.clear();
+        unicode.clear();
+        converted.clear();
     }
 
-    reader.close();
-    writer.close();
+    delete reader;
+    delete writer;
     return ConversionOK;
+}
+
+const char* concat(const char* string1, const char* string2)
+{
+    string res(string1);
+    res.append(string2);
+    return res.c_str();
 }

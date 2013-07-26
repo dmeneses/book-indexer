@@ -8,6 +8,37 @@
 #include "filereader.h"
 #include <sys/stat.h>
 
+FileReader::FileReader(const char* path, FileEncoding encoding)
+{
+    this->path_ = new char[strlen(path) + 1];
+    strcpy(path_, path);
+    this->encoding_ = encoding;
+    this->openFile_.open(path_, std::ifstream::binary);
+    this->openFile_.seekg(0, openFile_.end);
+    this->fileSize_ = openFile_.tellg();
+    this->openFile_.seekg(0, openFile_.beg);
+}
+
+FileReader* FileReader::buildFileReader(const char* path, FileEncoding encoding)
+{
+    if (!validFile(path))
+    {
+        return NULL;
+    }
+
+    FileReader* reader = new FileReader(path, encoding);
+    return reader;
+}
+
+FileReader::~FileReader()
+{
+    if (path_)
+        delete[] path_;
+
+    if (openFile_.is_open())
+        openFile_.close();
+}
+
 bool FileReader::end()
 {
     return openFile_.eof();
@@ -21,7 +52,7 @@ void FileReader::close()
 int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>& output)
 {
     char * buffer = new char [length];
-    openFile_.read(buffer, fileSize_ - currentIndex_);
+    openFile_.read(buffer, length);
     int readBytesCount = openFile_.gcount();
 
     if (readBytesCount < 0)
@@ -41,9 +72,9 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>&
 
         if (removedBytes > 0)
         {
-            currentIndex_ = openFile_.tellg();
-            currentIndex_ -= removedBytes;
-            openFile_.seekg(currentIndex_);
+            int currentIndex = openFile_.tellg();
+            currentIndex -= removedBytes;
+            openFile_.seekg(currentIndex);
         }
     }
 
@@ -65,5 +96,5 @@ bool FileReader::validFile(const char* path)
 
 int FileReader::removeUntilLastCompleteChar(std::list<char> output)
 {
-
+    return 0;
 }
