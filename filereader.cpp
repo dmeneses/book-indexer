@@ -34,10 +34,10 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>&
         output.push_back(buffer[i]);
     }
     delete[] buffer;
-
+    int removedBytes = 0;
     if (checkCompleteChars)
     {
-        int removedBytes = removeUntilLastCompleteChar(output);
+        removedBytes = removeUntilLastCompleteChar(output);
 
         if (removedBytes > 0)
         {
@@ -46,6 +46,8 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>&
             openFile_.seekg(currentIndex_);
         }
     }
+
+    return readBytesCount - removedBytes;
 }
 
 bool FileReader::validFile(const char* path)

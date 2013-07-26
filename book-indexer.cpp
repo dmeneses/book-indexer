@@ -14,7 +14,9 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
     }
 
     FileReader reader(path, UTF8);
-    FileWriter writer(path);
+    string newName(path);
+    newName.append("UTF16");
+    FileWriter writer(newName.c_str());
     while (!reader.end())
     {
         list<char> buffer;
