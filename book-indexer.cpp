@@ -16,7 +16,8 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
     //FileWriter writer(path);
     while (!reader.end())
     {
-        list<char> buffer = reader.readBuffer(100, true);
+        list<char> buffer;
+        int bytesRead = reader.readBuffer(100, true, buffer);
         list<long> unicode;
         ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
 
