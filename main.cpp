@@ -11,6 +11,7 @@
 #include "bitmanipulation.h"
 #include "converter.h"
 #include "book-indexer.h"
+#include <string.h>
 
 using namespace std;
 #define CONVERSION "Conversion: "

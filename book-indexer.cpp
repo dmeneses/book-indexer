@@ -2,6 +2,7 @@
 #include "converter.h"
 #include "book-indexer.h"
 #include "filereader.h"
+#include "filewriter.h"
 #include <list>
 using namespace std;
 
@@ -13,31 +14,34 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
     }
 
     FileReader reader(path, UTF8);
-    //FileWriter writer(path);
+    FileWriter writer(path);
     while (!reader.end())
     {
         list<char> buffer;
-        int bytesRead = reader.readBuffer(100, true, buffer);
-        list<long> unicode;
-        ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
-
-        if (response != ConversionOK)
+        int readBytes = reader.readBuffer(100, true, buffer);
+        if (readBytes > 0)
         {
-            return response;
+            list<long> unicode;
+            ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
+
+            if (response != ConversionOK)
+            {
+                return response;
+            }
+
+            list<short> converted;
+            response = unicodeToUTF16(unicode, converted, type);
+
+            if (response != ConversionOK)
+            {
+                return response;
+            }
+
+            writer.write(converted);
         }
-
-        list<short> converted;
-        response = unicodeToUTF16(unicode, converted, type);
-
-        if (response != ConversionOK)
-        {
-            return response;
-        }
-
-        //  writer.write(converted);
     }
 
     reader.close();
-//    writer.close;
+    writer.close();
     return ConversionOK;
 }
