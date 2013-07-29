@@ -8,6 +8,7 @@
 #include "filereader.h"
 #include <sys/stat.h>
 #include <string.h>
+#include "bitmanipulation.h"
 
 FileReader::FileReader(const char* path, FileEncoding encoding)
 {
@@ -97,5 +98,30 @@ bool FileReader::validFile(const char* path)
 
 int FileReader::removeUntilLastCompleteChar(std::list<char> output)
 {
-    return 0;
+    int res = 0;
+    bool validChar = false;
+    std::list<char>::iterator it = output.end();
+
+    while (!validChar && it != output.begin())
+    {
+        unsigned char testedChar = *it;
+
+        //Is a simple ASCII char. 0...
+        if (!isOn(testedChar, 7)) 
+        {
+            break;
+        }
+
+        //Is a header of a character. 11....
+        //If is false is the sequence of a character. 10...
+        if (isOn(testedChar, 6)) 
+        {
+            validChar = true;
+        }
+        
+        res++;
+        it++;
+    }
+
+    return res;
 }
