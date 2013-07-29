@@ -29,6 +29,14 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f3"
+                     displayName="FileReader"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/filereadertest.cpp</itemPath>
+        <itemPath>tests/filereadertest.h</itemPath>
+        <itemPath>tests/filereadertestrunner.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f2"
                      displayName="UTF16Converter"
                      projectFiles="true"
@@ -111,6 +119,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="filereader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filereader.h" ex="false" tool="3" flavor2="0">
@@ -124,6 +146,12 @@
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="test.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/filereadertest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/filereadertest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/filereadertestrunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utf16convertertest.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -205,6 +233,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f3">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f3</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="filereader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filereader.h" ex="false" tool="3" flavor2="0">
@@ -218,6 +260,12 @@
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="test.txt" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/filereadertest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/filereadertest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/filereadertestrunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/utf16convertertest.cpp" ex="false" tool="1" flavor2="0">
       </item>

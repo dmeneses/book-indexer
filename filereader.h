@@ -29,7 +29,7 @@ public:
 
 private:
     FileReader(const char* path, FileEncoding encoding);
-    int removeUntilLastCompleteChar(std::list<char> output);
+    int removeUntilLastCompleteChar(std::list<char>& output);
     static bool validFile(const char* path);
 
     std::ifstream openFile_;

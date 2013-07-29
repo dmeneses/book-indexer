@@ -74,6 +74,12 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>&
 
         if (removedBytes > 0)
         {
+            int toRemove = removedBytes;
+            while (toRemove)
+            {
+                output.pop_back();
+                toRemove--;
+            }
             int currentIndex = openFile_.tellg();
             currentIndex -= removedBytes;
             openFile_.seekg(currentIndex);
@@ -96,31 +102,31 @@ bool FileReader::validFile(const char* path)
     }
 }
 
-int FileReader::removeUntilLastCompleteChar(std::list<char> output)
+int FileReader::removeUntilLastCompleteChar(std::list<char>& output)
 {
     int res = 0;
     bool validChar = false;
-    std::list<char>::iterator it = output.end();
+    std::list<char>::reverse_iterator it = output.rbegin();
 
-    while (!validChar && it != output.begin())
+    while (!validChar && it != output.rend())
     {
-        unsigned char testedChar = *it;
+        char testedChar = *it;
 
         //Is a simple ASCII char. 0...
-        if (!isOn(testedChar, 7)) 
+        if (!isOn(testedChar, 7))
         {
             break;
         }
 
         //Is a header of a character. 11....
         //If is false is the sequence of a character. 10...
-        if (isOn(testedChar, 6)) 
+        if (isOn(testedChar, 6))
         {
             validChar = true;
         }
-        
+
         res++;
-        it++;
+        ++it;
     }
 
     return res;
