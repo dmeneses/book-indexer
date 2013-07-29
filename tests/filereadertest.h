@@ -15,10 +15,10 @@ class FileReaderTest : public CPPUNIT_NS::TestFixture
 {
     CPPUNIT_TEST_SUITE(FileReaderTest);
 
-    CPPUNIT_TEST(testClose);
     CPPUNIT_TEST(testEndOfAFileWhenEverythingIsRead);
     CPPUNIT_TEST(testReadBuffer100ASCIICharacters);
-    CPPUNIT_TEST(testReadBuffer20IncompleteComplexCharacters);
+    CPPUNIT_TEST(testReadBufferIncompleteComplexCharacters);
+    CPPUNIT_TEST(testReadBufferIncompleteComplexCharsAndKeepReadingAnotherChars);
 
     CPPUNIT_TEST_SUITE_END();
 
@@ -28,11 +28,11 @@ public:
     void setUp();
     void tearDown();
 
-private:
-    void testClose();
+private:   
     void testEndOfAFileWhenEverythingIsRead();
     void testReadBuffer100ASCIICharacters();
-    void testReadBuffer20IncompleteComplexCharacters();
+    void testReadBufferIncompleteComplexCharacters();
+    void testReadBufferIncompleteComplexCharsAndKeepReadingAnotherChars();
     FileReader* fileReader1_;
     FileReader* fileReader2_;
 };

@@ -33,11 +33,6 @@ void FileReaderTest::tearDown()
     delete fileReader2_;
 }
 
-void FileReaderTest::testClose()
-{
-
-}
-
 void FileReaderTest::testEndOfAFileWhenEverythingIsRead()
 {
     int size = 350;
@@ -46,6 +41,7 @@ void FileReaderTest::testEndOfAFileWhenEverythingIsRead()
     int result = fileReader1_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(322, result);
     CPPUNIT_ASSERT_EQUAL(true, fileReader1_->end());
+    CPPUNIT_ASSERT_EQUAL(322, (int) output.size());
 }
 
 void FileReaderTest::testReadBuffer100ASCIICharacters()
@@ -56,9 +52,10 @@ void FileReaderTest::testReadBuffer100ASCIICharacters()
     int result = fileReader1_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(100, result);
     CPPUNIT_ASSERT_EQUAL(false, fileReader1_->end());
+    CPPUNIT_ASSERT_EQUAL(100, (int) output.size());
 }
 
-void FileReaderTest::testReadBuffer20IncompleteComplexCharacters()
+void FileReaderTest::testReadBufferIncompleteComplexCharacters()
 {
     int size = 17;
     bool checkCompleteChars = true;
@@ -66,6 +63,28 @@ void FileReaderTest::testReadBuffer20IncompleteComplexCharacters()
     int result = fileReader2_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(15, result);
     CPPUNIT_ASSERT_EQUAL(false, fileReader2_->end());
-    CPPUNIT_ASSERT_EQUAL(15, (int)output.size());
+    CPPUNIT_ASSERT_EQUAL(15, (int) output.size());
+}
+
+void FileReaderTest::testReadBufferIncompleteComplexCharsAndKeepReadingAnotherChars()
+{
+    int size = 17;
+    bool checkCompleteChars = true;
+    std::list<char> output;
+    int result = fileReader2_->readBuffer(size, checkCompleteChars, output);
+    CPPUNIT_ASSERT_EQUAL(15, result);
+    CPPUNIT_ASSERT_EQUAL(false, fileReader2_->end());
+    CPPUNIT_ASSERT_EQUAL(15, (int) output.size());
+
+    size = 3;
+    output.clear();
+    result = fileReader2_->readBuffer(size, checkCompleteChars, output);
+    CPPUNIT_ASSERT_EQUAL(2, result);
+    CPPUNIT_ASSERT_EQUAL(false, fileReader2_->end());
+    CPPUNIT_ASSERT_EQUAL(2, (int) output.size());
+    CPPUNIT_ASSERT_EQUAL((char)0xD7, output.front());
+    output.pop_front();
+    CPPUNIT_ASSERT_EQUAL((char)0x95, output.front());
+    output.pop_front();
 }
 
