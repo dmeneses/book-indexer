@@ -29,6 +29,8 @@ bool FileWriter::write(std::list<short> &data)
         unsigned short bytes = *it;
         outputFile_.write((char*) &bytes, sizeof (bytes));
     }
+    
+    return outputFile_;
 }
 
 
