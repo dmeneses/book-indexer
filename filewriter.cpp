@@ -4,9 +4,6 @@
  * 
  * Created on July 26, 2013, 12:52 PM
  */
-
-#include <list>
-
 #include "filewriter.h"
 
 FileWriter::FileWriter(const char* path)

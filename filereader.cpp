@@ -7,6 +7,7 @@
 
 #include "filereader.h"
 #include <sys/stat.h>
+#include <string.h>
 
 FileReader::FileReader(const char* path, FileEncoding encoding)
 {

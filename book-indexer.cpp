@@ -45,6 +45,8 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
         buffer.clear();
         unicode.clear();
         converted.clear();
+        delete reader;
+        delete writer;
     }
 
     delete reader;

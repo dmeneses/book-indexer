@@ -7,10 +7,8 @@
 
 #ifndef FILEREADER_H
 #define	FILEREADER_H
-#include <string.h>
-#include <list>
-#include <iostream>
 #include <fstream>
+#include <list>
 
 enum FileEncoding
 {

@@ -12,6 +12,8 @@
       <itemPath>converter.h</itemPath>
       <itemPath>filereader.cpp</itemPath>
       <itemPath>filereader.h</itemPath>
+      <itemPath>filewriter.cpp</itemPath>
+      <itemPath>filewriter.h</itemPath>
       <itemPath>incompletecharacterexception.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -113,6 +115,10 @@
       </item>
       <item path="filereader.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="filewriter.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="filewriter.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="incompletecharacterexception.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
@@ -202,6 +208,10 @@
       <item path="filereader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filereader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="filewriter.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="filewriter.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="incompletecharacterexception.h" ex="false" tool="3" flavor2="0">
       </item>

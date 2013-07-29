@@ -8,15 +8,17 @@
 #ifndef FILEWRITER_H
 #define	FILEWRITER_H
 #include <fstream>
+#include <list>
 
 class FileWriter
 {
-public:
+public:   
     FileWriter(const char* path);
     FileWriter(const FileWriter& orig);
     virtual ~FileWriter();
     void close();
     bool write(std::list<short> &data);
+    
 private:
     std::ofstream outputFile_;
 };

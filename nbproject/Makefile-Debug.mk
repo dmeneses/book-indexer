@@ -39,6 +39,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/book-indexer.o \
 	${OBJECTDIR}/converter.o \
 	${OBJECTDIR}/filereader.o \
+	${OBJECTDIR}/filewriter.o \
 	${OBJECTDIR}/main.o
 
 # Test Directory
@@ -92,6 +93,11 @@ ${OBJECTDIR}/filereader.o: filereader.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/filereader.o filereader.cpp
+
+${OBJECTDIR}/filewriter.o: filewriter.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.cc) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/filewriter.o filewriter.cpp
 
 ${OBJECTDIR}/main.o: main.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -186,6 +192,19 @@ ${OBJECTDIR}/filereader_nomain.o: ${OBJECTDIR}/filereader.o filereader.cpp
 	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/filereader_nomain.o filereader.cpp;\
 	else  \
 	    ${CP} ${OBJECTDIR}/filereader.o ${OBJECTDIR}/filereader_nomain.o;\
+	fi
+
+${OBJECTDIR}/filewriter_nomain.o: ${OBJECTDIR}/filewriter.o filewriter.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	@NMOUTPUT=`${NM} ${OBJECTDIR}/filewriter.o`; \
+	if (echo "$$NMOUTPUT" | ${GREP} '|main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T main$$') || \
+	   (echo "$$NMOUTPUT" | ${GREP} 'T _main$$'); \
+	then  \
+	    ${RM} $@.d;\
+	    $(COMPILE.cc) -g -Dmain=__nomain -MMD -MP -MF $@.d -o ${OBJECTDIR}/filewriter_nomain.o filewriter.cpp;\
+	else  \
+	    ${CP} ${OBJECTDIR}/filewriter.o ${OBJECTDIR}/filewriter_nomain.o;\
 	fi
 
 ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp 
