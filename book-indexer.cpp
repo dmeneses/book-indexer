@@ -14,7 +14,7 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
 {
     FileReader* reader = FileReader::buildFileReader(path, UTF8);
     if (!reader) return FileNotFound;
-    FileWriter* writer = new FileWriter("UTF16");
+    FileWriter* writer = new FileWriter(concat(path, "UTF16"));
 
     list<char> buffer;
     list<long> unicode;
@@ -23,12 +23,12 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
     while (!reader->end())
     {
         int readBytes = reader->readBuffer(READ_SIZE, true, buffer);
-        
+
         if (!readBytes)
         {
             break;
         }
-        
+
         ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
 
         if (response != ConversionOK)
@@ -44,7 +44,7 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
         }
 
         writer->write(converted);
-        
+
         buffer.clear();
         unicode.clear();
         converted.clear();
