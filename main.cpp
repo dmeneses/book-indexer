@@ -18,6 +18,12 @@ using namespace std;
 #define INDEXER "Indexer: "
 #define MISSING_PARAMENTERS "Missing paramenters. Use -h to check the necessary parameters.\n"
 #define INVALID_OPTION "Invalid option. Use -h to check the necessary parameters and available options.\n"
+#define CONVERSION_OK "Successful Conversion\n"
+#define EMPTY_STREAM "The file is empty.\n"
+#define INCOMPLETE_CHARACTERS "Incomplete or malformed character inside the input file.\n"
+#define WRONG_UTF8 "The file is not in UTF8 format.\n"
+#define FILE_NOT_FOUND "File not found.\n"
+#define PRINT cout <<
 
 char** arguments;
 int argsCount;
@@ -86,17 +92,18 @@ void convertFile()
 
 void printResult(ConversionResponse response)
 {
+    PRINT CONVERSION;
     switch (response)
     {
-    case ConversionOK: cout << "Successful Conversion";
+    case ConversionOK: PRINT CONVERSION_OK;
         break;
-    case EmptyStream: cout << "The file is empty.";
+    case EmptyStream: PRINT EMPTY_STREAM;
         break;
-    case IncompleteCharater: cout << "Incomplete or malformed character inside the input file.";
+    case IncompleteCharater: PRINT INCOMPLETE_CHARACTERS;
         break;
-    case WrongUTF8: cout << "The file is not in UTF8 format.";
+    case WrongUTF8: PRINT WRONG_UTF8;
         break;
-    case FileNotFound: cout << "File not found.";
+    case FileNotFound: PRINT FILE_NOT_FOUND;
         break;
     default: cout << CONVERSION << INVALID_OPTION;
     }
