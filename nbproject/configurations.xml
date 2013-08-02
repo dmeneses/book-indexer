@@ -29,6 +29,14 @@
                    displayName="Test Files"
                    projectFiles="false"
                    kind="TEST_LOGICAL_FOLDER">
+      <logicalFolder name="f5"
+                     displayName="ConsoleTest"
+                     projectFiles="true"
+                     kind="TEST">
+        <itemPath>tests/consoletest.cpp</itemPath>
+        <itemPath>tests/consoletest.h</itemPath>
+        <itemPath>tests/consoletestrunner.cpp</itemPath>
+      </logicalFolder>
       <logicalFolder name="f3"
                      displayName="FileReader"
                      projectFiles="true"
@@ -68,7 +76,6 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <itemPath>test.txt</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -155,6 +162,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="filereader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filereader.h" ex="false" tool="3" flavor2="0">
@@ -167,7 +188,11 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="test.txt" ex="false" tool="3" flavor2="0">
+      <item path="tests/consoletest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/consoletest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/consoletestrunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/filereadertest.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -289,6 +314,20 @@
           </linkerLibItems>
         </linkerTool>
       </folder>
+      <folder path="TestFiles/f5">
+        <cTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </cTool>
+        <ccTool>
+          <commandLine>`cppunit-config --cflags`</commandLine>
+        </ccTool>
+        <linkerTool>
+          <output>${TESTDIR}/TestFiles/f5</output>
+          <linkerLibItems>
+            <linkerOptionItem>`cppunit-config --libs`</linkerOptionItem>
+          </linkerLibItems>
+        </linkerTool>
+      </folder>
       <item path="filereader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="filereader.h" ex="false" tool="3" flavor2="0">
@@ -301,7 +340,11 @@
       </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="test.txt" ex="false" tool="3" flavor2="0">
+      <item path="tests/consoletest.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="tests/consoletest.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="tests/consoletestrunner.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="tests/filereadertest.cpp" ex="false" tool="1" flavor2="0">
       </item>

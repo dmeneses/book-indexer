@@ -57,7 +57,7 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>&
     openFile_.read(buffer, length);
     int readBytesCount = openFile_.gcount();
 
-    if (readBytesCount < 0)
+    if (readBytesCount == 0)
     {
         return 0;
     }
@@ -100,6 +100,8 @@ bool FileReader::validFile(const char* path)
             return S_ISREG(st_info.st_mode);
         }
     }
+
+    return false;
 }
 
 int FileReader::removeUntilLastCompleteChar(std::list<char>& output)

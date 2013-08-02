@@ -24,6 +24,7 @@ int argsCount;
 
 void checkParamenters();
 void convertFile();
+void printResult(ConversionResponse response);
 
 int main(int argc, char** argv)
 {
@@ -75,9 +76,27 @@ void convertFile()
 
     switch (option)
     {
-    case 'l': convertUTF8toUTF16(arguments[3], LE);
+    case 'l': printResult(convertUTF8toUTF16(arguments[3], LE));
         break;
-    case 'b': convertUTF8toUTF16(arguments[3], BE);
+    case 'b': printResult(convertUTF8toUTF16(arguments[3], BE));
+        break;
+    default: cout << CONVERSION << INVALID_OPTION;
+    }
+}
+
+void printResult(ConversionResponse response)
+{
+    switch (response)
+    {
+    case ConversionOK: cout << "Successful Conversion";
+        break;
+    case EmptyStream: cout << "The file is empty.";
+        break;
+    case IncompleteCharater: cout << "Incomplete or malformed character inside the input file.";
+        break;
+    case WrongUTF8: cout << "The file is not in UTF8 format.";
+        break;
+    case FileNotFound: cout << "File not found.";
         break;
     default: cout << CONVERSION << INVALID_OPTION;
     }

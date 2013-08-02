@@ -23,25 +23,28 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
     while (!reader->end())
     {
         int readBytes = reader->readBuffer(READ_SIZE, true, buffer);
-        if (readBytes > 0)
+        
+        if (!readBytes)
         {
-            ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
+            break;
+        }
+        
+        ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
 
-            if (response != ConversionOK)
-            {
-                return response;
-            }
-
-            response = unicodeToUTF16(unicode, converted, type);
-
-            if (response != ConversionOK)
-            {
-                return response;
-            }
-
-            writer->write(converted);
+        if (response != ConversionOK)
+        {
+            return response;
         }
 
+        response = unicodeToUTF16(unicode, converted, type);
+
+        if (response != ConversionOK)
+        {
+            return response;
+        }
+
+        writer->write(converted);
+        
         buffer.clear();
         unicode.clear();
         converted.clear();
