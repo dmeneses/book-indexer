@@ -35,14 +35,13 @@ ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
             return response;
         }
 
-        response = unicodeToUTF16(unicode, converted, !isTheSameFormat);
+        response = unicodeToUTF16(unicode, converted, isTheSameFormat);
 
         if (response != ConversionOK)
         {
             return response;
         }
 
-        std::cout << "The contents of list are: \n";
         for (std::list<short>::iterator it = converted.begin(); it != converted.end(); it++)
             std::cout << hex << *it << '\n';
 
