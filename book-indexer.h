@@ -9,7 +9,7 @@
 #define	BOOK_INDEXER_H
 #include "converter.h"
 
-ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type = BE);
+ConversionResponse convertUTF8toUTF16(const char* path, Endianness type = BE);
 
 #endif	/* BOOK_INDEXER_H */
 

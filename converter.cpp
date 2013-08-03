@@ -15,7 +15,7 @@ using namespace std;
 int getBytesToRead(char charHeader);
 int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException);
 int getBits(char byte, int sizeToGet);
-void convertToUTF16(long unicodeChar, short outputConversion[2], UTF16Type type = BE);
+void convertToUTF16(long unicodeChar, short outputConversion[2], bool changeByteOrder);
 unsigned short flipOrder(unsigned short word);
 
 ConversionResponse convertUTF8toUnicode(list<char> &input, list<long> &output)
@@ -109,7 +109,7 @@ int getBits(char byte, int sizeToGet)
     }
 }
 
-ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, UTF16Type type)
+ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, bool changeByteOrder)
 {
     if (input.size() == 0)
     {
@@ -121,9 +121,9 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
     while (input.size() > 0)
     {
         unicode = input.front();
-        convertToUTF16(unicode, converted, type);
+        convertToUTF16(unicode, converted, changeByteOrder);
 
-        if (type == LE && converted[1])
+        if (changeByteOrder && converted[1])
         {
             short temp = converted[0];
             converted[0] = converted[1];
@@ -142,11 +142,11 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
     return ConversionOK;
 }
 
-void convertToUTF16(long unicodeChar, short* outputConversion, UTF16Type type)
+void convertToUTF16(long unicodeChar, short* outputConversion, bool changeByteOrder)
 {
     if (unicodeChar <= 0xFFFF)
     {
-        unsigned short character = type == LE ? flipOrder(unicodeChar) : unicodeChar;
+        unsigned short character = changeByteOrder ? flipOrder(unicodeChar) : unicodeChar;
         outputConversion[0] = character;
         outputConversion[1] = 0;
         return;
@@ -158,7 +158,7 @@ void convertToUTF16(long unicodeChar, short* outputConversion, UTF16Type type)
     hword += 0xD800;
     lword += 0xDC00;
 
-    if (type == LE)
+    if (changeByteOrder)
     {
         hword = flipOrder(hword);
         lword = flipOrder(lword);

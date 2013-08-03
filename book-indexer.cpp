@@ -5,16 +5,15 @@
 #include "filewriter.h"
 #include <list>
 #define READ_SIZE 100
-
+#include <iostream>
 using namespace std;
 
-const char* concat(const char* string1, const char* string2);
-
-ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
+ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
 {
     FileReader* reader = FileReader::buildFileReader(path, UTF8);
     if (!reader) return FileNotFound;
-    FileWriter* writer = new FileWriter(concat(path, "UTF16"));
+    bool isTheSameFormat = reader->isSameFormat(type);
+    FileWriter* writer = new FileWriter(strcat("UTF16", path));
 
     list<char> buffer;
     list<long> unicode;
@@ -36,12 +35,16 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
             return response;
         }
 
-        response = unicodeToUTF16(unicode, converted, type);
+        response = unicodeToUTF16(unicode, converted, !isTheSameFormat);
 
         if (response != ConversionOK)
         {
             return response;
         }
+
+        std::cout << "The contents of list are: \n";
+        for (std::list<short>::iterator it = converted.begin(); it != converted.end(); it++)
+            std::cout << hex << *it << '\n';
 
         writer->write(converted);
 
@@ -53,11 +56,4 @@ ConversionResponse convertUTF8toUTF16(const char* path, UTF16Type type)
     delete reader;
     delete writer;
     return ConversionOK;
-}
-
-const char* concat(const char* string1, const char* string2)
-{
-    string res(string1);
-    res.append(string2);
-    return res.c_str();
 }

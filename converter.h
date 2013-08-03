@@ -18,14 +18,14 @@ enum ConversionResponse
     FileNotFound
 };
 
-enum UTF16Type
+enum Endianness
 {
     BE,
     LE
 };
 
 ConversionResponse convertUTF8toUnicode(std::list<char>& input, std::list<long>& output);
-ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, UTF16Type type = BE);
+ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, bool changeByteOrder);
 
 #endif	/* NEWCLASS_H */
 

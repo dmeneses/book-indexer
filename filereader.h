@@ -9,6 +9,7 @@
 #define	FILEREADER_H
 #include <fstream>
 #include <list>
+#include "converter.h"
 
 enum FileEncoding
 {
@@ -26,7 +27,7 @@ public:
     int readBuffer(int size, bool checkCompleteChars, std::list<char>& output);
     bool end();
     void close();
-
+    bool isSameFormat(Endianness requiredEndianness);
 private:
     FileReader(const char* path, FileEncoding encoding);
     int removeUntilLastCompleteChar(std::list<char>& output);

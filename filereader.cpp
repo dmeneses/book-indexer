@@ -133,3 +133,27 @@ int FileReader::removeUntilLastCompleteChar(std::list<char>& output)
 
     return res;
 }
+
+bool FileReader::isSameFormat(Endianness requiredEndianness)
+{
+    bool res = false;
+    char * buffer = new char [3];
+    this->openFile_.read(buffer, 3);
+    int readBytesCount = openFile_.gcount();
+
+    if (readBytesCount == 0)
+        res = true;
+
+    unsigned char header = buffer[0];
+    unsigned char byte1 = buffer[1];
+    unsigned char byte2 = buffer[2];
+    
+    if (header == 0xEF && byte1 == 0xBB && byte2 == 0xBF && requiredEndianness == BE)
+        res = true;
+    if (header == 0xEF && byte1 == 0xBF && byte2 == 0xBE && requiredEndianness == LE)
+        res = true;
+
+    this->openFile_.seekg(0, openFile_.beg);
+    delete buffer;
+    return res;
+}
