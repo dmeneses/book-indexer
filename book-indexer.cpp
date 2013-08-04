@@ -16,10 +16,12 @@ ConversionResponse convertUTF8toUTF16(const char* inputPath, const char* outputP
     bool isTheSameFormat = reader->isSameFormat(type);
     FileWriter* writer = new FileWriter(outputPath);
 
-    //TODO: A vector will be a better option.
     vector<char> buffer;
+    buffer.reserve(READ_SIZE);
     vector<long> unicode;
+    unicode.reserve(READ_SIZE);
     vector<short> converted;
+    converted.reserve(READ_SIZE);
 
     while (!reader->end())
     {
