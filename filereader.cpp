@@ -68,6 +68,8 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>&
     }
     delete[] buffer;
     int removedBytes = 0;
+    
+    //TODO: Move this to another method.
     if (checkCompleteChars && !end())
     {
         removedBytes = removeUntilLastCompleteChar(output);

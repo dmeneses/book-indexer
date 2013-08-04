@@ -24,6 +24,7 @@ void FileWriter::close()
 
 bool FileWriter::write(std::list<short> &data)
 {
+    //TODO: Get more efficient writing way.
     for (std::list<short>::iterator it = data.begin(); it != data.end(); ++it)
     {
         unsigned short bytes = *it;

@@ -16,6 +16,7 @@ ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
     bool isTheSameFormat = reader->isSameFormat(type);
     FileWriter* writer = new FileWriter("Converted");//TODO: Manage name of the output file.
 
+    //TODO: A vector will be a better option.
     list<char> buffer;
     list<long> unicode;
     list<short> converted;
