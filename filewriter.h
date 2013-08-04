@@ -8,7 +8,7 @@
 #ifndef FILEWRITER_H
 #define	FILEWRITER_H
 #include <fstream>
-#include <list>
+#include <vector>
 
 class FileWriter
 {
@@ -17,7 +17,7 @@ public:
     FileWriter(const FileWriter& orig);
     virtual ~FileWriter();
     void close();
-    bool write(std::list<short> &data);
+    bool write(std::vector<short> &data);
     
 private:
     std::ofstream outputFile_;

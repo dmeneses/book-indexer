@@ -3,7 +3,7 @@
 #include "book-indexer.h"
 #include "filereader.h"
 #include "filewriter.h"
-#include <list>
+#include <vector>
 #define READ_SIZE 100
 
 using namespace std;
@@ -14,12 +14,12 @@ ConversionResponse convertUTF8toUTF16(const char* inputPath, const char* outputP
     FileReader* reader = FileReader::buildFileReader(inputPath, UTF8);
     if (!reader) return FileNotFound;
     bool isTheSameFormat = reader->isSameFormat(type);
-    FileWriter* writer = new FileWriter(outputPath);//TODO: Manage name of the output file.
+    FileWriter* writer = new FileWriter(outputPath);
 
     //TODO: A vector will be a better option.
-    list<char> buffer;
-    list<long> unicode;
-    list<short> converted;
+    vector<char> buffer;
+    vector<long> unicode;
+    vector<short> converted;
 
     while (!reader->end())
     {

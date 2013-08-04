@@ -8,7 +8,7 @@
 #ifndef FILEREADER_H
 #define	FILEREADER_H
 #include <fstream>
-#include <list>
+#include <vector>
 #include "converter.h"
 
 enum FileEncoding
@@ -24,13 +24,13 @@ public:
     FileReader(const FileReader & orig);
     static FileReader* buildFileReader(const char* path, FileEncoding encoding);
     virtual ~FileReader();
-    int readBuffer(int size, bool checkCompleteChars, std::list<char>& output);
+    int readBuffer(int size, bool checkCompleteChars, std::vector<char>& output);
     bool end();
     void close();
     bool isSameFormat(Endianness requiredEndianness);
 private:
     FileReader(const char* path, FileEncoding encoding);
-    int removeUntilLastCompleteChar(std::list<char>& output);
+    int removeUntilLastCompleteChar(std::vector<char>& output);
     static bool validFile(const char* path);
 
     std::ifstream openFile_;

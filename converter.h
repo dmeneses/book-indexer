@@ -7,7 +7,7 @@
 
 #ifndef NEWCLASS_H
 #define	NEWCLASS_H
-#include <list>
+#include <vector>
 
 enum ConversionResponse
 {
@@ -24,8 +24,8 @@ enum Endianness
     LE
 };
 
-ConversionResponse convertUTF8toUnicode(std::list<char>& input, std::list<long>& output);
-ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, bool changeByteOrder);
+ConversionResponse convertUTF8toUnicode(std::vector<char>& input, std::vector<long>& output);
+ConversionResponse unicodeToUTF16(std::vector<long>& input, std::vector<short>& output, bool changeByteOrder);
 
 #endif	/* NEWCLASS_H */
 

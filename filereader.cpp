@@ -51,7 +51,7 @@ void FileReader::close()
     openFile_.close();
 }
 
-int FileReader::readBuffer(int length, bool checkCompleteChars, std::list<char>& output)
+int FileReader::readBuffer(int length, bool checkCompleteChars, std::vector<char>& output)
 {
     char * buffer = new char [length];
     openFile_.read(buffer, length);
@@ -106,11 +106,11 @@ bool FileReader::validFile(const char* path)
     return false;
 }
 
-int FileReader::removeUntilLastCompleteChar(std::list<char>& output)
+int FileReader::removeUntilLastCompleteChar(std::vector<char>& output)
 {
     int res = 0;
     bool validChar = false;
-    std::list<char>::reverse_iterator it = output.rbegin();
+    std::vector<char>::reverse_iterator it = output.rbegin();
 
     while (!validChar && it != output.rend())
     {

@@ -22,10 +22,10 @@ void FileWriter::close()
     outputFile_.close();
 }
 
-bool FileWriter::write(std::list<short> &data)
+bool FileWriter::write(std::vector<short> &data)
 {
     //TODO: Get more efficient writing way.
-    for (std::list<short>::iterator it = data.begin(); it != data.end(); ++it)
+    for (std::vector<short>::iterator it = data.begin(); it != data.end(); ++it)
     {
         unsigned short bytes = *it;
         outputFile_.write((char*) &bytes, sizeof (bytes));

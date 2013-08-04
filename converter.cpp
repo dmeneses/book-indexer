@@ -8,17 +8,17 @@
 #include "converter.h"
 #include "bitmanipulation.h"
 #include "incompletecharacterexception.h"
-#include <list>
+#include <vector>
 
 using namespace std;
 
 int getBytesToRead(char charHeader);
-int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException);
+int convertCharacter(vector<char>& content, int position, int bytesToRead) throw (IncompleteCharacterException);
 int getBits(char byte, int sizeToGet);
 void convertToUTF16(long unicodeChar, short outputConversion[2], bool changeByteOrder);
 unsigned short flipOrder(unsigned short word);
 
-ConversionResponse convertUTF8toUnicode(list<char> &input, list<long> &output)
+ConversionResponse convertUTF8toUnicode(vector<char> &input, vector<long> &output)
 {
     if (input.size() == 0)
     {
@@ -27,9 +27,10 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<long> &output)
 
     long unicodeChar = 0;
     int bytesToRead = 0;
-    while (input.size() > 0)
+    int i = 0;
+    while (input.size() > i)
     {
-        bytesToRead = getBytesToRead(input.front());
+        bytesToRead = getBytesToRead(input.at(i));
 
         if (bytesToRead == 0)
             return WrongUTF8;
@@ -38,7 +39,7 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<long> &output)
 
         try
         {
-            unicodeChar = convertCharacter(input, bytesToRead);
+            unicodeChar = convertCharacter(input, i, bytesToRead);
         }
         catch (IncompleteCharacterException)
         {
@@ -46,6 +47,7 @@ ConversionResponse convertUTF8toUnicode(list<char> &input, list<long> &output)
         }
 
         output.push_back(unicodeChar);
+        i += bytesToRead;
     }
 
     return ConversionOK;
@@ -65,10 +67,10 @@ int getBytesToRead(char charHeader)
     return 1;
 }
 
-int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteCharacterException)
+int convertCharacter(vector<char>& content, int position, int bytesToRead) throw (IncompleteCharacterException)
 {
-    unsigned char header = content.front();
-    content.pop_front();
+    unsigned char header = content.at(position);
+    position++;
 
     if (bytesToRead == 1)
     {
@@ -80,8 +82,8 @@ int convertCharacter(list<char>& content, int bytesToRead) throw (IncompleteChar
 
     while (bytesToRead)
     {
-        header = content.front();
-        content.pop_front();
+        header = content.at(position);
+        position++;
 
         if (!isOn(header, 7) || isOn(header, 6))
         {
@@ -109,7 +111,7 @@ int getBits(char byte, int sizeToGet)
     }
 }
 
-ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& output, bool changeByteOrder)
+ConversionResponse unicodeToUTF16(std::vector<long>& input, std::vector<short>& output, bool changeByteOrder)
 {
     if (input.size() == 0)
     {
@@ -118,9 +120,10 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
 
     unsigned long unicode = 0;
     short* converted = new short[2];
-    while (input.size() > 0)
+    int index = 0;
+    while (input.size() > index)
     {
-        unicode = input.front();
+        unicode = input.at(index);
         convertToUTF16(unicode, converted, changeByteOrder);
 
         if (changeByteOrder && converted[1])
@@ -135,7 +138,7 @@ ConversionResponse unicodeToUTF16(std::list<long>& input, std::list<short>& outp
         if (converted[1])
             output.push_back(converted[1]);
 
-        input.pop_front();
+        index++;
     }
 
     delete[] converted;
