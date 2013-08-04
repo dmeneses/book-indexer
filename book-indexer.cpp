@@ -5,15 +5,16 @@
 #include "filewriter.h"
 #include <list>
 #define READ_SIZE 100
-#include <iostream>
+
 using namespace std;
 
 ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
 {
+    ConversionResponse response = ConversionOK;
     FileReader* reader = FileReader::buildFileReader(path, UTF8);
     if (!reader) return FileNotFound;
     bool isTheSameFormat = reader->isSameFormat(type);
-    FileWriter* writer = new FileWriter(strcat("UTF16", path));
+    FileWriter* writer = new FileWriter("Converted");//TODO: Manage name of the output file.
 
     list<char> buffer;
     list<long> unicode;
@@ -28,22 +29,19 @@ ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
             break;
         }
 
-        ConversionResponse response = convertUTF8toUnicode(buffer, unicode);
+        response = convertUTF8toUnicode(buffer, unicode);
 
         if (response != ConversionOK)
         {
-            return response;
+            break;
         }
 
         response = unicodeToUTF16(unicode, converted, isTheSameFormat);
 
         if (response != ConversionOK)
         {
-            return response;
+            break;
         }
-
-        for (std::list<short>::iterator it = converted.begin(); it != converted.end(); it++)
-            std::cout << hex << *it << '\n';
 
         writer->write(converted);
 
@@ -54,5 +52,5 @@ ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
 
     delete reader;
     delete writer;
-    return ConversionOK;
+    return response;
 }

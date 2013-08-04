@@ -71,11 +71,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/book-indexer.exe
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/indexer.exe
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/book-indexer.exe: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/indexer.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/book-indexer ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/indexer ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/bitmanipulation.o: bitmanipulation.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -112,9 +112,9 @@ ${OBJECTDIR}/main.o: main.cpp
 
 # Build Test Targets
 .build-tests-conf: .build-conf ${TESTFILES}
-${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/consoletest.o ${TESTDIR}/tests/consoletestrunner.o ${OBJECTFILES:%.o=%_nomain.o}
+${TESTDIR}/TestFiles/f5: ${TESTDIR}/tests/convertertest.o ${TESTDIR}/tests/convertertestrunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
-	${LINK.cc}   -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS} `cppunit-config --libs` `cppunit-config --libs`   
+	${LINK.cc}   -o ${TESTDIR}/TestFiles/f5 $^ ${LDLIBSOPTIONS} `cppunit-config --libs` `cppunit-config --libs` `cppunit-config --libs`   
 
 ${TESTDIR}/TestFiles/f3: ${TESTDIR}/tests/filereadertest.o ${TESTDIR}/tests/filereadertestrunner.o ${OBJECTFILES:%.o=%_nomain.o}
 	${MKDIR} -p ${TESTDIR}/TestFiles
@@ -133,16 +133,16 @@ ${TESTDIR}/TestFiles/f1: ${TESTDIR}/tests/utf8convertertest.o ${TESTDIR}/tests/u
 	${LINK.cc}   -o ${TESTDIR}/TestFiles/f1 $^ ${LDLIBSOPTIONS} `cppunit-config --libs`   
 
 
-${TESTDIR}/tests/consoletest.o: tests/consoletest.cpp 
+${TESTDIR}/tests/convertertest.o: tests/convertertest.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF $@.d -o ${TESTDIR}/tests/consoletest.o tests/consoletest.cpp
+	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF $@.d -o ${TESTDIR}/tests/convertertest.o tests/convertertest.cpp
 
 
-${TESTDIR}/tests/consoletestrunner.o: tests/consoletestrunner.cpp 
+${TESTDIR}/tests/convertertestrunner.o: tests/convertertestrunner.cpp 
 	${MKDIR} -p ${TESTDIR}/tests
 	${RM} $@.d
-	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF $@.d -o ${TESTDIR}/tests/consoletestrunner.o tests/consoletestrunner.cpp
+	$(COMPILE.cc) -O2 `cppunit-config --cflags` -MMD -MP -MF $@.d -o ${TESTDIR}/tests/convertertestrunner.o tests/convertertestrunner.cpp
 
 
 ${TESTDIR}/tests/filereadertest.o: tests/filereadertest.cpp 
@@ -287,7 +287,7 @@ ${OBJECTDIR}/main_nomain.o: ${OBJECTDIR}/main.o main.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/book-indexer.exe
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/indexer.exe
 
 # Subprojects
 .clean-subprojects:
