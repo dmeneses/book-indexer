@@ -8,13 +8,13 @@
 
 using namespace std;
 
-ConversionResponse convertUTF8toUTF16(const char* path, Endianness type)
+ConversionResponse convertUTF8toUTF16(const char* inputPath, const char* outputPath, Endianness type)
 {
     ConversionResponse response = ConversionOK;
-    FileReader* reader = FileReader::buildFileReader(path, UTF8);
+    FileReader* reader = FileReader::buildFileReader(inputPath, UTF8);
     if (!reader) return FileNotFound;
     bool isTheSameFormat = reader->isSameFormat(type);
-    FileWriter* writer = new FileWriter("Converted");//TODO: Manage name of the output file.
+    FileWriter* writer = new FileWriter(outputPath);//TODO: Manage name of the output file.
 
     //TODO: A vector will be a better option.
     list<char> buffer;

@@ -10,6 +10,7 @@
 #define EMPTY_FILE_TO_CONVERT "resources/emptyFile.txt"
 #define FILE_COMPARE_LE "resources/conversiontestUTF16-NPC-LE.txt"
 #define FILE_COMPARE_BE "resources/conversiontestUTF16-NPC-BE.txt"
+#define OUTPUT_FILE "resources/output.txt"
 #define BUFFER_SIZE 500
 CPPUNIT_TEST_SUITE_REGISTRATION(convertertest);
 
@@ -27,26 +28,27 @@ void convertertest::setUp()
 
 void convertertest::tearDown()
 {
+    remove(OUTPUT_FILE);
 }
 
 void convertertest::convertAnEmptyFile()
 {
-    ConversionResponse response = convertUTF8toUTF16(EMPTY_FILE_TO_CONVERT, BE);
+    ConversionResponse response = convertUTF8toUTF16(EMPTY_FILE_TO_CONVERT, OUTPUT_FILE, BE);
     CPPUNIT_ASSERT_EQUAL(ConversionOK, response);
 }
 
 void convertertest::convertAFileWithContentUTF8BEtoUTF16BE()
 {
-    ConversionResponse response = convertUTF8toUTF16(FILE_TO_CONVERT, BE);
+    ConversionResponse response = convertUTF8toUTF16(FILE_TO_CONVERT, OUTPUT_FILE, BE);
     CPPUNIT_ASSERT_EQUAL(ConversionOK, response);
-    CPPUNIT_ASSERT(compareFiles("Converted", FILE_COMPARE_BE));
+    CPPUNIT_ASSERT(compareFiles(OUTPUT_FILE, FILE_COMPARE_BE));
 }
 
 void convertertest::convertAFileWithContentUTF8BEtoUTF16LE()
 {
-    ConversionResponse response = convertUTF8toUTF16(FILE_TO_CONVERT, LE);
+    ConversionResponse response = convertUTF8toUTF16(FILE_TO_CONVERT, OUTPUT_FILE, LE);
     CPPUNIT_ASSERT_EQUAL(ConversionOK, response);
-    CPPUNIT_ASSERT(compareFiles("Converted", FILE_COMPARE_LE));
+    CPPUNIT_ASSERT(compareFiles(OUTPUT_FILE, FILE_COMPARE_LE));
 }
 
 int compareFiles(const char* file1, const char* file2)

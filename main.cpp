@@ -66,7 +66,7 @@ void checkParamenters()
 
 void convertFile()
 {
-    if (argsCount != 4)
+    if (argsCount != 5)
     {
         cout << CONVERSION << MISSING_PARAMENTERS;
         return;
@@ -82,9 +82,9 @@ void convertFile()
 
     switch (option)
     {
-    case 'l': printResult(convertUTF8toUTF16(arguments[3], LE));
+    case 'l': printResult(convertUTF8toUTF16(arguments[3], arguments[4], LE));
         break;
-    case 'b': printResult(convertUTF8toUTF16(arguments[3], BE));
+    case 'b': printResult(convertUTF8toUTF16(arguments[3], arguments[4], BE));
         break;
     default: cout << CONVERSION << INVALID_OPTION;
     }
