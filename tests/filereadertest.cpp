@@ -6,7 +6,7 @@
  */
 
 #include "filereadertest.h"
-#include <list>
+#include <vector>
 #define TEST_FILE1 "resources/filereadertest"
 #define TEST_FILE2 "resources/filereadertest2"
 
@@ -37,7 +37,7 @@ void FileReaderTest::testEndOfAFileWhenEverythingIsRead()
 {
     int size = 350;
     bool checkCompleteChars = true;
-    std::list<char> output;
+    std::vector<char> output;
     int result = fileReader1_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(322, result);
     CPPUNIT_ASSERT_EQUAL(true, fileReader1_->end());
@@ -48,7 +48,7 @@ void FileReaderTest::testReadBuffer100ASCIICharacters()
 {
     int size = 100;
     bool checkCompleteChars = true;
-    std::list<char> output;
+    std::vector<char> output;
     int result = fileReader1_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(100, result);
     CPPUNIT_ASSERT_EQUAL(false, fileReader1_->end());
@@ -59,7 +59,7 @@ void FileReaderTest::testReadBufferIncompleteComplexCharacters()
 {
     int size = 17;
     bool checkCompleteChars = true;
-    std::list<char> output;
+    std::vector<char> output;
     int result = fileReader2_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(15, result);
     CPPUNIT_ASSERT_EQUAL(false, fileReader2_->end());
@@ -70,7 +70,7 @@ void FileReaderTest::testReadBufferIncompleteComplexCharsAndKeepReadingAnotherCh
 {
     int size = 17;
     bool checkCompleteChars = true;
-    std::list<char> output;
+    std::vector<char> output;
     int result = fileReader2_->readBuffer(size, checkCompleteChars, output);
     CPPUNIT_ASSERT_EQUAL(15, result);
     CPPUNIT_ASSERT_EQUAL(false, fileReader2_->end());
@@ -82,9 +82,7 @@ void FileReaderTest::testReadBufferIncompleteComplexCharsAndKeepReadingAnotherCh
     CPPUNIT_ASSERT_EQUAL(2, result);
     CPPUNIT_ASSERT_EQUAL(false, fileReader2_->end());
     CPPUNIT_ASSERT_EQUAL(2, (int) output.size());
-    CPPUNIT_ASSERT_EQUAL((char)0xD7, output.front());
-    output.pop_front();
-    CPPUNIT_ASSERT_EQUAL((char)0x95, output.front());
-    output.pop_front();
+    CPPUNIT_ASSERT_EQUAL((char)0xD7, output.at(0));
+    CPPUNIT_ASSERT_EQUAL((char)0x95, output.at(1));
 }
 

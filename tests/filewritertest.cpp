@@ -33,7 +33,7 @@ void FileWriterTest::tearDown()
 void FileWriterTest::testWrite()
 {
     short originalData[] = {10, 20, 30, 40, 50};
-    std::list<short> data(originalData, originalData + sizeof (originalData) / sizeof (int));
+    std::vector<short> data(originalData, originalData + sizeof (originalData) / sizeof (int));
     bool result = fileWriter_->write(data);
     fileWriter_->close();
     

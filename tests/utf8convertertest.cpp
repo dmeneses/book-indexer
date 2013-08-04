@@ -29,12 +29,12 @@ void UTF8ConverterTest::tearDown()
 {
 }
 
-int convertCharacter(list<char>& content, int bytesToRead);
+int convertCharacter(vector<char>& content, int position, int bytesToRead) throw (IncompleteCharacterException);
 
 void UTF8ConverterTest::testConvertCharacterWithOneByte()
 {
     //Character A
-    list<char> content;
+    vector<char> content;
     content.push_back(0x41);
     validateConversion(content, 0x41);
 }
@@ -42,7 +42,7 @@ void UTF8ConverterTest::testConvertCharacterWithOneByte()
 void UTF8ConverterTest::testConvertCharacterWithTwoBytes()
 {
     //Character ñ
-    list<char> content;
+    vector<char> content;
     content.push_back(0xC3);
     content.push_back(0xB1);
     validateConversion(content, 0xF1);
@@ -51,7 +51,7 @@ void UTF8ConverterTest::testConvertCharacterWithTwoBytes()
 void UTF8ConverterTest::testConvertCharacterWithThreeBytes()
 {
     //Character - (Minus sign)
-    list<char> content;
+    vector<char> content;
     content.push_back(0xe2);
     content.push_back(0x88);
     content.push_back(0x92);
@@ -61,7 +61,7 @@ void UTF8ConverterTest::testConvertCharacterWithThreeBytes()
 void UTF8ConverterTest::testConvertCharacterWithFourBytes()
 {
     //MATHEMATICAL BOLD CAPITAL A
-    list<char> content;
+    vector<char> content;
     content.push_back(0xF0);
     content.push_back(0x9D);
     content.push_back(0x90);
@@ -72,19 +72,19 @@ void UTF8ConverterTest::testConvertCharacterWithFourBytes()
 void UTF8ConverterTest::testConvertCharacterWithWrongBytes()
 {
     //MATHEMATICAL BOLD CAPITAL A
-    list<char> content;
+    vector<char> content;
     content.push_back(0xF0);
     content.push_back(0x9D);
     content.push_back(0x01); //Wrong!! must be 0x90. It doesn't have the bit header -10- for the byte.
     content.push_back(0x80);
     CPPUNIT_ASSERT_THROW_MESSAGE("The expected exception was not received", 
-                                 convertCharacter(content, content.size()), 
+                                 convertCharacter(content, 0, content.size()), 
                                  IncompleteCharacterException);
 }
 
-void validateConversion(std::list<char>& content, int expected)
+void validateConversion(std::vector<char>& content, int expected)
 {
-    int result = convertCharacter(content, content.size());
+    int result = convertCharacter(content, 0, content.size());
     CPPUNIT_ASSERT_EQUAL(expected, result);
 }
 
@@ -132,11 +132,9 @@ void validBytesToRead(char toTest, int expectedNumber)
     CPPUNIT_ASSERT_EQUAL(expectedNumber, result);
 }
 
-ConversionResponse convertUTF8toUnicode(list<char>& input, list<int>& output);
-
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
 {
-    list<char> input;
+    vector<char> input;
     input.push_back(0xC3);
     input.push_back(0xB1);
     input.push_back(0xE2);
@@ -144,25 +142,22 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithThreeCharacters()
     input.push_back(0x92);
     input.push_back(0x41);
 
-    list<long> output;
+    vector<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(3, resultSize);
-    CPPUNIT_ASSERT_EQUAL((long)0xF1, output.front());
-    output.pop_front();
-    CPPUNIT_ASSERT_EQUAL((long)0x2212, output.front());
-    output.pop_front();
-    CPPUNIT_ASSERT_EQUAL((long)0x41, output.front());
-    output.pop_front();
+    CPPUNIT_ASSERT_EQUAL((long)0xF1, output.at(0));
+    CPPUNIT_ASSERT_EQUAL((long)0x2212, output.at(1));
+    CPPUNIT_ASSERT_EQUAL((long)0x41, output.at(2));
     CPPUNIT_ASSERT_EQUAL(ConversionOK, result);
 }
 
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining()
 {
     //Putting invalid character 10000000 = 0x80
-    list<char> input;
+    vector<char> input;
     input.push_back(0x80);
-    list<long> output;
+    vector<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
 }
@@ -170,14 +165,14 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterAtTheBegining(
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
 {
     //Putting invalid character 10000000 = 0x80
-    list<char> input;
+    vector<char> input;
     input.push_back(0xC3);
     input.push_back(0xB1);
     input.push_back(0x80);
     input.push_back(0xE2);
     input.push_back(0x88);
     input.push_back(0x92);
-    list<long> output;
+    vector<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(WrongUTF8, result);
@@ -187,8 +182,8 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithWrongCharacterInTheMiddle()
 
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithAEmptyInput()
 {
-    list<char> input;
-    list<long> output;
+    vector<char> input;
+    vector<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(EmptyStream, result);
@@ -197,12 +192,12 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithAEmptyInput()
 
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBegining()
 {
-    list<char> input;
+    vector<char> input;
     input.push_back(0xC3);
     input.push_back(0xB1);
     input.push_back(0xE2);
     input.push_back(0x41);
-    list<long> output;
+    vector<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(IncompleteCharater, result);
@@ -212,12 +207,12 @@ void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharacterAtTheBeg
 
 void UTF8ConverterTest::testConvertUTF8toUnicodeWithAIncompleteCharaterAtTheMiddle()
 {
-    list<char> input;
+    vector<char> input;
     input.push_back(0xC3);
     input.push_back(0xE2);
     input.push_back(0x88);
     input.push_back(0x92);
-    list<long> output;
+    vector<long> output;
     ConversionResponse result = convertUTF8toUnicode(input, output);
     int resultSize = output.size();
     CPPUNIT_ASSERT_EQUAL(IncompleteCharater, result);

@@ -10,7 +10,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "../converter.h"
-#include <list>
+#include <vector>
 
 class UTF8ConverterTest : public CPPUNIT_NS::TestFixture
 {
@@ -65,7 +65,7 @@ private:
 };
 
 void validBytesToRead(char toTest, int expectedNumber);
-void validateConversion(std::list<char>& content, int expected);
+void validateConversion(std::vector<char>& content, int expected);
 
 #endif	/* CONVERTERTEST_H */
 
