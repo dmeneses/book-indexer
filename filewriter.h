@@ -20,10 +20,7 @@ public:
     bool write(std::vector<short> &data);
     
 private:
-    void resize(int newSize);
     std::ofstream outputFile_;
-    unsigned short* buffer;
-    int currentSize;
 };
 
 #endif	/* FILEWRITER_H */
