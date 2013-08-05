@@ -33,11 +33,14 @@ private:
     int checkBytesOfCharacters(std::vector<char>& output);
     int removeUntilLastCompleteChar(std::vector<char>& output);
     static bool validFile(const char* path);
+    void resize(int newSize);
 
     std::ifstream openFile_;
     char* path_;
     FileEncoding encoding_;
     int fileSize_;
+    char* buffer_;
+    int currentSize_;
 };
 
 #endif	/* FILEREADER_H */

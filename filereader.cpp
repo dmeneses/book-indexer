@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <string.h>
 #include "bitmanipulation.h"
+#define DEFAULT_LENGTH 100
 
 FileReader::FileReader(const char* path, FileEncoding encoding)
 {
@@ -19,6 +20,7 @@ FileReader::FileReader(const char* path, FileEncoding encoding)
     this->openFile_.seekg(0, openFile_.end);
     this->fileSize_ = openFile_.tellg();
     this->openFile_.seekg(0, openFile_.beg);
+    this->buffer_ = new char [DEFAULT_LENGTH];
 }
 
 FileReader* FileReader::buildFileReader(const char* path, FileEncoding encoding)
@@ -35,10 +37,19 @@ FileReader* FileReader::buildFileReader(const char* path, FileEncoding encoding)
 FileReader::~FileReader()
 {
     if (path_)
+    {
         delete[] path_;
+        path_ = 0;
+    }
 
     if (openFile_.is_open())
         openFile_.close();
+
+    if (buffer_)
+    {
+        delete[] buffer_;
+        buffer_ = 0;
+    }
 }
 
 bool FileReader::validFile(const char* path)
@@ -66,21 +77,28 @@ void FileReader::close()
     openFile_.close();
 }
 
+void FileReader::resize(int newSize)
+{
+    delete[] buffer_;
+    buffer_ = new char[newSize];
+    currentSize_ = newSize;
+}
+
 int FileReader::readBuffer(int length, bool checkCompleteChars, std::vector<char>& output)
 {
-    char * buffer = new char [length];
-    openFile_.read(buffer, length);
+    if (currentSize_ < length) resize(length);
+
+    openFile_.read(buffer_, length);
     int readBytesCount = openFile_.gcount();
 
     if (readBytesCount == 0) return 0;
 
     for (int i = 0; i < readBytesCount; i++)
     {
-        output.push_back(buffer[i]);
+        output.push_back(buffer_[i]);
     }
-    delete[] buffer;
 
-    if (checkCompleteChars)
+    if (checkCompleteChars && !end())
         readBytesCount -= checkBytesOfCharacters(output);
 
     return readBytesCount;
