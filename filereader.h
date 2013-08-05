@@ -30,6 +30,7 @@ public:
     bool isSameFormat(Endianness requiredEndianness);
 private:
     FileReader(const char* path, FileEncoding encoding);
+    int checkBytesOfCharacters(std::vector<char>& output);
     int removeUntilLastCompleteChar(std::vector<char>& output);
     static bool validFile(const char* path);
 

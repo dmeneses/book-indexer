@@ -41,6 +41,21 @@ FileReader::~FileReader()
         openFile_.close();
 }
 
+bool FileReader::validFile(const char* path)
+{
+    struct stat st_info;
+
+    if (path)
+    {
+        if (stat(path, &st_info) == 0)
+        {
+            return S_ISREG(st_info.st_mode);
+        }
+    }
+
+    return false;
+}
+
 bool FileReader::end()
 {
     return openFile_.eof();
@@ -57,53 +72,38 @@ int FileReader::readBuffer(int length, bool checkCompleteChars, std::vector<char
     openFile_.read(buffer, length);
     int readBytesCount = openFile_.gcount();
 
-    if (readBytesCount == 0)
-    {
-        return 0;
-    }
+    if (readBytesCount == 0) return 0;
 
     for (int i = 0; i < readBytesCount; i++)
     {
         output.push_back(buffer[i]);
     }
     delete[] buffer;
-    int removedBytes = 0;
-    
-    //TODO: Move this to another method.
-    if (checkCompleteChars && !end())
-    {
-        removedBytes = removeUntilLastCompleteChar(output);
 
-        if (removedBytes > 0)
-        {
-            int toRemove = removedBytes;
-            while (toRemove)
-            {
-                output.pop_back();
-                toRemove--;
-            }
-            int currentIndex = openFile_.tellg();
-            currentIndex -= removedBytes;
-            openFile_.seekg(currentIndex);
-        }
-    }
+    if (checkCompleteChars)
+        readBytesCount -= checkBytesOfCharacters(output);
 
-    return readBytesCount - removedBytes;
+    return readBytesCount;
 }
 
-bool FileReader::validFile(const char* path)
+int FileReader::checkBytesOfCharacters(std::vector<char>& output)
 {
-    struct stat st_info;
+    int removedBytes = removeUntilLastCompleteChar(output);
 
-    if (path)
+    if (removedBytes > 0)
     {
-        if (stat(path, &st_info) == 0)
+        int toRemove = removedBytes;
+        while (toRemove)
         {
-            return S_ISREG(st_info.st_mode);
+            output.pop_back();
+            toRemove--;
         }
+        int currentIndex = openFile_.tellg();
+        currentIndex -= removedBytes;
+        openFile_.seekg(currentIndex);
     }
 
-    return false;
+    return removedBytes;
 }
 
 int FileReader::removeUntilLastCompleteChar(std::vector<char>& output)
@@ -149,7 +149,7 @@ bool FileReader::isSameFormat(Endianness requiredEndianness)
     unsigned char header = buffer[0];
     unsigned char byte1 = buffer[1];
     unsigned char byte2 = buffer[2];
-    
+
     if (header == 0xEF && byte1 == 0xBB && byte2 == 0xBF && requiredEndianness == BE)
         res = true;
     if (header == 0xEF && byte1 == 0xBF && byte2 == 0xBE && requiredEndianness == LE)
